@@ -1,0 +1,23 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Kiểm tra xem công cụ quản lý gói nào đang được sử dụng
+if [ -f "package-lock.json" ]; then
+  # Dự đoán là npm
+  echo "Using npm"
+  npm run format:fix
+  npm run lint
+elif [ -f "yarn.lock" ]; then
+  # Dự đoán là yarn
+  echo "Using yarn"
+  yarn run format:fix
+  yarn run lint
+elif [ -f "pnpm-lock.yaml" ]; then
+  # Dự đoán là pnpm
+  echo "Using pnpm"
+  pnpm run format:fix
+  pnpm run lint
+else
+  echo "No lock file found. Please ensure you're using npm, yarn, or pnpm."
+  exit 1
+fi
