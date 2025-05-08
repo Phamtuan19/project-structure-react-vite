@@ -34,9 +34,14 @@ interface ControllerSwitchType<TFieldValues extends FieldValues = FieldValues> e
    showError?: boolean;
 }
 
-function ControllerSwitch<TFieldValues extends FieldValues = FieldValues>(props: ControllerSwitchType<TFieldValues>) {
-   const { control, name, label, required = false, showError = true, ...resProps } = props;
-
+const ControllerSwitch = <TFieldValues extends FieldValues = FieldValues>({
+   control,
+   name,
+   label,
+   required = false,
+   showError = true,
+   ...resProps
+}: ControllerSwitchType<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -62,6 +67,6 @@ function ControllerSwitch<TFieldValues extends FieldValues = FieldValues>(props:
          )}
       />
    );
-}
+};
 
 export default ControllerSwitch;

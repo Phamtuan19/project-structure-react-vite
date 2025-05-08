@@ -36,9 +36,16 @@ interface ControllerSelectType<TFieldValues extends FieldValues = FieldValues> e
    onChange?: (value: string, option?: DefaultOptionType | DefaultOptionType[]) => void;
 }
 
-function ControllerSelect<TFieldValues extends FieldValues = FieldValues>(props: ControllerSelectType<TFieldValues>) {
-   const { control, name, onChange, size = 'large', label, required = false, showError = true, ...resProps } = props;
-
+const ControllerSelect = <TFieldValues extends FieldValues = FieldValues>({
+   control,
+   name,
+   onChange,
+   size = 'large',
+   label,
+   required = false,
+   showError = true,
+   ...resProps
+}: ControllerSelectType<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -68,6 +75,6 @@ function ControllerSelect<TFieldValues extends FieldValues = FieldValues>(props:
          }}
       />
    );
-}
+};
 
 export default ControllerSelect;

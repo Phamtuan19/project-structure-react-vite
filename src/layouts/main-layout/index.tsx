@@ -1,5 +1,4 @@
 import { Navigation } from '@components';
-import React from 'react';
 import { Outlet } from 'react-router';
 
 const MainLayout = () => {

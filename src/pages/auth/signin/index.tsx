@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import { RadiusUprightOutlined } from '@ant-design/icons';
 import { openNotification, SvgIcon } from '@components';
 import { Button, Typography } from 'antd';

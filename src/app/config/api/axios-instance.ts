@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, {
    AxiosError,
    type AxiosInstance,
@@ -19,7 +21,9 @@ let failedQueue: {
 const processQueue = (error: any, token: string | null = null) => {
    failedQueue.forEach((p) => {
       if (token) {
-         p.config.headers!['Authorization'] = `Bearer ${token}`;
+         if (p.config.headers) {
+            p.config.headers['Authorization'] = `Bearer ${token}`;
+         }
          p.resolve(axios(p.config));
       } else {
          p.reject(error);

@@ -37,9 +37,15 @@ interface ControllerRadioType<TFieldValues extends FieldValues = FieldValues> ex
    showError?: boolean;
 }
 
-function ControllerRadio<TFieldValues extends FieldValues = FieldValues>(props: ControllerRadioType<TFieldValues>) {
-   const { control, name, label, required = false, options, showError = true, ...resProps } = props;
-
+const ControllerRadio = <TFieldValues extends FieldValues = FieldValues>({
+   control,
+   name,
+   label,
+   required = false,
+   options,
+   showError = true,
+   ...resProps
+}: ControllerRadioType<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -65,6 +71,6 @@ function ControllerRadio<TFieldValues extends FieldValues = FieldValues>(props: 
          )}
       />
    );
-}
+};
 
 export default ControllerRadio;

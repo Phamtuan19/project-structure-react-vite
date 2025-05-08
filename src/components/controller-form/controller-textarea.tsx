@@ -48,11 +48,15 @@ interface ControllerTextAreaProps<TFieldValues extends FieldValues = FieldValues
    showError?: boolean;
 }
 
-function ControllerTextArea<TFieldValues extends FieldValues = FieldValues>(
-   props: ControllerTextAreaProps<TFieldValues>,
-) {
-   const { name, control, label, required = false, onChange, showError = true, ...resProps } = props;
-
+const ControllerTextArea = <TFieldValues extends FieldValues = FieldValues>({
+   name,
+   control,
+   label,
+   required = false,
+   onChange,
+   showError = true,
+   ...resProps
+}: ControllerTextAreaProps<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -85,6 +89,6 @@ function ControllerTextArea<TFieldValues extends FieldValues = FieldValues>(
          }}
       />
    );
-}
+};
 
 export default ControllerTextArea;

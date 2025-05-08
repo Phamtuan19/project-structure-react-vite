@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -23,4 +24,4 @@ i18next.use(initReactI18next).init({
    },
 });
 
-export default i18next;
+export { i18next };

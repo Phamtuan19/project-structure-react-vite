@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface AxiosResponseData<TData = Record<string, any>> {
    map: any;
    success: boolean;
@@ -15,20 +16,18 @@ interface HandleErrorApi {
 type ResponseStatus = 0 | 1; // 1 : lỗi, 0: Success
 
 /**
+ * Interface phản hồi lỗi từ API.
  *
- * @HandleErrorApiResponse
- *
- * - statusCode: Mã lỗi HTTP (ví dụ: 400, 401, 500)
- * - message: Thông báo lỗi
- * - error: Mô tả lỗi hệ thống (ví dụ: "Bad Request", "Unauthorized")
- * - data: Dữ liệu phụ nếu có (chi tiết lỗi cụ thể)
- * - timestamp: Thời điểm lỗi xảy ra (ISO 8601 format)
- * - path: Endpoint
- * - code: Trạng thái trả về (0: thành công, 1: lỗi)
- *
+ * Các trường bao gồm:
+ * - `statusCode`: Mã lỗi HTTP (vd: 400, 401, 500)
+ * - `message`: Thông báo lỗi
+ * - `error`: Mô tả lỗi hệ thống
+ * - `data`: Dữ liệu phụ nếu có
+ * - `timestamp`: Thời điểm lỗi xảy ra (ISO 8601 format)
+ * - `path`: Endpoint gây lỗi
+ * - `code`: Trạng thái trả về (0: thành công, 1: lỗi)
  */
-
-interface HandleErrorApiResponse {
+interface HandleErrorApiResponse<T = any> {
    code: ResponseStatus;
    statusCode: number;
    message: string;
@@ -39,46 +38,16 @@ interface HandleErrorApiResponse {
 }
 
 /**
+ * Cấu trúc phản hồi thành công từ API.
  *
- * @SuccessResponse
- * - statusCode: Mã lỗi HTTP (ví dụ: 400, 401, 500)
- * - message: Thông báo lỗi
- * - data: Dữ liệu trả về
- * - timestamp: Thời điểm lỗi xảy ra (ISO 8601 format)
- * - path: Endpoint
- * - code: Trạng thái trả về (0: thành công, 1: lỗi)
- *
+ * Các trường bao gồm:
+ * - `statusCode`: Mã HTTP (vd: 200)
+ * - `message`: Thông báo thành công
+ * - `data`: Dữ liệu trả về
+ * - `timestamp`: Thời điểm phản hồi (ISO 8601 format)
+ * - `path`: Endpoint tương ứng
+ * - `code`: Trạng thái trả về (0: thành công, 1: lỗi)
  */
-
-interface SuccessResponse<T> {
-   code: ResponseStatus;
-   statusCode: number;
-   message: string;
-   data: T;
-   timestamp?: string;
-   path?: string;
-}
-
-/**
- *
- * @SuccessResponsePaging
- *
- * - statusCode: Mã lỗi HTTP (ví dụ: 400, 401, 500)
- * - message: Thông báo lỗi
- * - data: Dữ liệu trả về
- * - content: Mảng dữ liệu
- * - totalElements: Tổng số phần tử
- * - totalPages: Tổng số trang
- * - page: Trang hiện tại
- * - size: Kích thước trang
- * - hasNext: Có trang tiếp theo hay không
- * - hasPrevious: Có trang trước hay không
- * - timestamp: Thời điểm lỗi xảy ra (ISO 8601 format)
- * - path: Endpoint
- * - code: Trạng thái trả về (0: thành công, 1: lỗi)
- *
- */
-
 interface SuccessResponsePaging<T> {
    code: ResponseStatus;
    statusCode: number;

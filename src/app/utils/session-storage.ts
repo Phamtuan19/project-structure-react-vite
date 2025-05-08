@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 import { SETTINGS_CONFIG } from '@app/config';
 
 /**

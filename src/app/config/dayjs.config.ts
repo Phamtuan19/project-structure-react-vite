@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Configures `dayjs` to work with timezone and local time support.
  *
@@ -61,4 +62,4 @@ const formattedCustomDayjs = (date: any, format?: string) => {
    return customDayjs(date).format(format);
 };
 
-export { customDayjs, formattedCustomDayjs };
+export { customDayjs, formattedCustomDayjs, formatWithDefault };

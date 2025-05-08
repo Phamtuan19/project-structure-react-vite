@@ -1,5 +1,5 @@
-import React from 'react';
-
-const RouterProvider = () => {};
+const RouterProvider = () => {
+   return null;
+};
 
 export { RouterProvider };

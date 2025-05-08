@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router';
  * It can be used as a fallback for Error Boundaries or for handling HTTP 500 responses.
  *
  * @returns A user-friendly error page with a "Go Home" button.
- *
  */
 
 const ServerError = () => {

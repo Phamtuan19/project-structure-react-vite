@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useSelector } from 'react-redux';
 import type { RootState } from '@redux/rootReducer';
 

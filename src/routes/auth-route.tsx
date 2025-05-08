@@ -1,4 +1,3 @@
-import { Outlet } from 'react-router';
 import { ROUTE_PATH } from '@constants';
 import { loadable, type RouteProps } from '@app/routes';
 

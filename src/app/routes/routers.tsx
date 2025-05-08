@@ -2,7 +2,6 @@ import type { RouteProps } from './route.type';
 import { Outlet } from 'react-router';
 
 import routers from '@routes';
-import { loadable } from './config';
 
 /**
  * An array of route objects that define the paths and elements for the application's pages.

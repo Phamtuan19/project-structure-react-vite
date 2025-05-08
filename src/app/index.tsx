@@ -13,7 +13,7 @@ const queryClient = new QueryClient();
 
 focusManager.setFocused(false);
 
-function App() {
+const App = () => {
    return (
       <Provider store={store}>
          <QueryClientProvider client={queryClient}>
@@ -26,6 +26,6 @@ function App() {
          </QueryClientProvider>
       </Provider>
    );
-}
+};
 
 export default App;

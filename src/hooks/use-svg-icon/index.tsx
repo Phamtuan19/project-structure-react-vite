@@ -1,5 +1,11 @@
 import { useRef, type ElementType, useState, useEffect } from 'react';
 
+/**
+ * Custom hook để import SVG icon động từ thư mục local.
+ *
+ * @param name - Tên file SVG (không có phần mở rộng .svg)
+ * @returns Đối tượng gồm error, loading, và component Icon đã import.
+ */
 export function useSvgIcon(name: string) {
    const importedIconRef = useRef<ElementType | null>(null);
    const [loading, setLoading] = useState(false);

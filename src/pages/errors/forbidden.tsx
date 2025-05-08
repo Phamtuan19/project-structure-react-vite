@@ -1,15 +1,11 @@
-import React from 'react';
-
 /**
+ * Component hiển thị trang lỗi 403 Forbidden.
  *
- * @Forbidden
- *
- * This component is used to display a 403 Forbidden error page.
- *
+ * @remarks This component displays the 403 Forbidden error page.
  */
 
 const Forbidden = () => {
-   return <div></div>;
+   return <div />;
 };
 
 export default Forbidden;

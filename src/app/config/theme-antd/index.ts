@@ -7,13 +7,13 @@ import { theme, type ThemeConfig } from 'antd';
  * - Hỗ trợ theme tùy biến toàn cục và từng component riêng biệt.
  * - Được dùng để bao bọc toàn bộ ứng dụng, đảm bảo style và hành vi nhất quán.
  *
- * @param locale Ngôn ngữ giao diện (vd: viVN, enUS)
- * @param direction Hướng layout: 'ltr' hoặc 'rtl'
- * @param componentSize Kích thước mặc định của các component ('small' | 'middle' | 'large')
- * @param iconPrefixCls Prefix cho icon (ít dùng)
- * @param csp Hỗ trợ CSP: truyền vào nonce nếu có
- * @param autoInsertSpaceInButton Tự động chèn khoảng trắng giữa các ký tự trong Button
- * @param theme Tùy biến theme toàn cục hoặc từng component (token + components)
+ * @param locale - Ngôn ngữ giao diện (vd: viVN, enUS)
+ * @param direction - Hướng layout: 'ltr' hoặc 'rtl'
+ * @param componentSize - Kích thước mặc định của các component ('small' | 'middle' | 'large')
+ * @param iconPrefixCls - Prefix cho icon (ít dùng)
+ * @param csp - Hỗ trợ CSP: truyền vào nonce nếu có
+ * @param autoInsertSpaceInButton - Tự động chèn khoảng trắng giữa các ký tự trong Button
+ * @param theme - Tùy biến theme toàn cục hoặc từng component (token + components)
  */
 
 export const themeAntdConfig: ThemeConfig = {

@@ -3,10 +3,7 @@ import { z } from 'zod';
 export const ROUTE_PATH = {
    HOME: '/',
 
-   /**
-    * @AUTH
-    *
-    */
+   // ===== AUTH ROUTES ===== //
 
    SIGN_IN: '/auth/signin',
 

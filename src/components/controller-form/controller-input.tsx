@@ -41,19 +41,17 @@ interface ControllerInputType<TFieldValues extends FieldValues = FieldValues> ex
    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-function ControllerInput<TFieldValues extends FieldValues = FieldValues>(props: ControllerInputType<TFieldValues>) {
-   const {
-      control,
-      name,
-      onChange,
-      size = 'large',
-      label,
-      required = false,
-      showError = true,
-      onBlur,
-      ...resProps
-   } = props;
-
+const ControllerInput = <TFieldValues extends FieldValues = FieldValues>({
+   control,
+   name,
+   onChange,
+   size = 'large',
+   label,
+   required = false,
+   showError = true,
+   onBlur,
+   ...resProps
+}: ControllerInputType<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -66,7 +64,7 @@ function ControllerInput<TFieldValues extends FieldValues = FieldValues>(props: 
 
             const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
                field.onBlur();
-               onChange?.(e);
+               onBlur?.(e);
             };
 
             return (
@@ -85,6 +83,6 @@ function ControllerInput<TFieldValues extends FieldValues = FieldValues>(props: 
          }}
       />
    );
-}
+};
 
 export default ControllerInput;

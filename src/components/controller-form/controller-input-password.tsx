@@ -43,21 +43,17 @@ interface ControllerInputPasswordType<TFieldValues extends FieldValues = FieldVa
    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-function ControllerInputPassword<TFieldValues extends FieldValues = FieldValues>(
-   props: ControllerInputPasswordType<TFieldValues>,
-) {
-   const {
-      control,
-      name,
-      onChange,
-      size = 'large',
-      label,
-      required = false,
-      showError = true,
-      onBlur,
-      ...resProps
-   } = props;
-
+const ControllerInputPassword = <TFieldValues extends FieldValues = FieldValues>({
+   control,
+   name,
+   onChange,
+   size = 'large',
+   label,
+   required = false,
+   showError = true,
+   onBlur,
+   ...resProps
+}: ControllerInputPasswordType<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -70,7 +66,7 @@ function ControllerInputPassword<TFieldValues extends FieldValues = FieldValues>
 
             const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
                field.onBlur();
-               onChange?.(e);
+               onBlur?.(e);
             };
 
             return (
@@ -96,6 +92,6 @@ function ControllerInputPassword<TFieldValues extends FieldValues = FieldValues>
          }}
       />
    );
-}
+};
 
 export default ControllerInputPassword;

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useNavigate, useRoutes, useLocation, matchRoutes, type RouteObject } from 'react-router';
 import { SETTINGS_CONFIG } from '../config';
@@ -26,7 +27,7 @@ const flattenedRoutes = flattenRoutes(ROUTES);
 export const Permission = () => {
    const auth = useAuth();
 
-   const { isAuthentication, isLoading, user } = auth;
+   const { isAuthentication, isLoading } = auth;
 
    const userRoles: Role[] = [];
 
@@ -81,7 +82,7 @@ export const Permission = () => {
        */
       const matchedRouteConfig = flattenedRoutes.find((route) => route.path === matched.route.path);
 
-      const fieldsCommon = matchedRouteConfig?.fieldsCommon ?? [];
+      //   const fieldsCommon = matchedRouteConfig?.fieldsCommon ?? [];
 
       /**
        * Checks if the user has permission to access route.

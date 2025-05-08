@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Checkbox, Typography } from 'antd';
 import type { CheckboxProps } from 'antd';
 import type { Control, FieldValues, Path } from 'react-hook-form';
@@ -36,11 +37,15 @@ interface ControllerCheckboxType<TFieldValues extends FieldValues = FieldValues>
    showError?: boolean;
 }
 
-function ControllerCheckbox<TFieldValues extends FieldValues = FieldValues>(
-   props: ControllerCheckboxType<TFieldValues>,
-) {
-   const { control, name, label, required = false, options, showError = true, ...resProps } = props;
-
+const ControllerCheckbox = <TFieldValues extends FieldValues = FieldValues>({
+   control,
+   name,
+   label,
+   required = false,
+   options,
+   showError = true,
+   ...resProps
+}: ControllerCheckboxType<TFieldValues>) => {
    return (
       <Controller
          name={name}
@@ -66,6 +71,6 @@ function ControllerCheckbox<TFieldValues extends FieldValues = FieldValues>(
          }}
       />
    );
-}
+};
 
 export default ControllerCheckbox;

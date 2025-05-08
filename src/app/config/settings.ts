@@ -1,5 +1,5 @@
 import { type Language, LANGUAGE } from '@app/constants';
-import { ROUTE_PATH, API_END_POINT, type RoutePath } from '@constants';
+import { ROUTE_PATH, type RoutePath } from '@constants';
 
 type ConfigProps = {
    FALLBACK_LANGUAGE: Language;

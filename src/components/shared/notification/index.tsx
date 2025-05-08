@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-object-injection */
+/* eslint-disable import/no-named-as-default-member */
 // src/utils/notification.ts
 import { notification, type NotificationArgsProps } from 'antd';
 import React from 'react';
@@ -17,7 +19,6 @@ export const openNotification = (
    if (!notificationApi) return;
 
    const {
-      name = '',
       message = i18next.t('global.notification'),
       showProgress = true,
       type = 'info',
@@ -25,13 +26,15 @@ export const openNotification = (
       ...rest
    } = config;
 
+   if (!notificationApi) return;
+
    notificationApi[type]({
       ...rest,
       duration: 10000000,
       message,
       placement,
       showProgress,
-      description: <Context.Consumer>{(value) => <span>{name}</span>}</Context.Consumer>,
+      description: <Context.Consumer>{(value) => <span>{value.name}</span>}</Context.Consumer>,
       style: {
          padding: 16,
       },

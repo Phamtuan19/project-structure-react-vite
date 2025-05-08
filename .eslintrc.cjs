@@ -22,7 +22,7 @@ module.exports = {
    ],
 
    // Danh sách các thư mục và file mà ESLint sẽ bỏ qua khi kiểm tra
-   ignorePatterns: ['dist', '.eslintrc.cjs', '*.config.js'],
+   ignorePatterns: ['dist', '.eslintrc.cjs', '*.config.js', 'vite.config.ts'],
 
    // Các cấu hình đặc biệt cho các loại file khác nhau
    overrides: [
@@ -52,7 +52,7 @@ module.exports = {
                'warn',
                {
                   selector: 'default',
-                  format: ['camelCase', 'PascalCase', 'UPPER_CASE'], // Quy tắc đặt tên theo các chuẩn như camelCase, PascalCase
+                  format: ['camelCase', 'PascalCase', 'UPPER_CASE', 'snake_case'], // Quy tắc đặt tên theo các chuẩn như camelCase, PascalCase
                   leadingUnderscore: 'allow', // Cho phép dấu gạch dưới ở đầu biến
                },
             ],
@@ -60,13 +60,7 @@ module.exports = {
       },
       {
          // Cấu hình dành riêng cho các file kiểu định nghĩa TypeScript (*.d.ts) và các file cấu hình khác
-         files: [
-            '*.d.ts',
-            'prettier.config.ts', // File cấu hình Prettier
-            'tailwind.config.ts', // File cấu hình TailwindCSS
-            'vite.config.ts', // File cấu hình Vite
-            './src/pages/**/*.tsx', // Các file trang trong thư mục src
-         ],
+         files: ['*.d.ts', 'prettier.config.ts', 'tailwind.config.ts', 'vite.config.ts', './src/pages/**/*.tsx'],
          rules: {
             'import/no-default-export': 'off', // Tắt quy tắc không cho phép export mặc định
             'react/display-name': 'off', // Tắt quy tắc yêu cầu hiển thị tên component trong React
@@ -76,42 +70,29 @@ module.exports = {
 
    // Các cấu hình liên quan đến parser cho JSX
    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
       ecmaFeatures: {
-         jsx: true, // Cho phép cú pháp JSX
+         jsx: true,
       },
    },
 
    // Các plugin mà ESLint sẽ sử dụng
    plugins: [
-      'filename-rules', // Kiểm tra quy tắc tên file
-      'import', // Kiểm tra quy tắc import
-      'jsdoc', // Kiểm tra việc sử dụng JSDoc
-      'jsx-a11y', // Kiểm tra tính khả dụng của JSX
-      'react', // Các quy tắc dành cho React
-      'react-hooks', // Các quy tắc dành cho React hooks
-      'react-refresh', // Kiểm tra cho React Refresh (HMR)
-      'security', // Các quy tắc bảo mật
-      'tsdoc', // Kiểm tra cú pháp TSDoc
+      'filename-rules',
+      'import',
+      'jsdoc',
+      'jsx-a11y',
+      'react',
+      'react-hooks',
+      'react-refresh',
+      'security',
+      'tsdoc',
    ],
 
    // Các quy tắc được áp dụng cho toàn bộ dự án
    rules: {
-      //   'import/order': [
-      //      'error',
-      //      {
-      //         'newlines-between': 'always', // Yêu cầu có khoảng trắng giữa các nhóm import
-      //         pathGroups: [
-      //            { pattern: '@app', group: 'internal' },
-      //            { pattern: '@app/**', group: 'internal' },
-
-      //            { pattern: '@components', group: 'internal' },
-      //            { pattern: '@components/**', group: 'internal' },
-      //         ],
-      //         groups: [['builtin', 'external'], ['internal'], ['parent', 'sibling', 'index'], 'unknown'], // Quy định nhóm import
-      //         alphabetize: { order: 'asc', caseInsensitive: true }, // Sắp xếp import theo thứ tự chữ cái
-      //      },
-      //   ],
-      'import/no-default-export': 'error',
+      'import/no-default-export': 'off',
       'jsdoc/check-indentation': 'warn',
       'jsdoc/check-syntax': 'warn',
       'jsdoc/no-blank-blocks': 'warn',
@@ -126,8 +107,6 @@ module.exports = {
       'jsdoc/require-description': 'warn',
       'jsdoc/require-param': ['warn', { checkDestructuredRoots: false }],
       'jsdoc/require-throws': 'error',
-      'jsdoc/require-hyphen-before-param-description': 'off',
-      'jsdoc/require-returns': 'off',
       'jsdoc/tag-lines': ['warn', 'never', { startLines: 1 }],
       'jsdoc/sort-tags': 'warn',
       'react/button-has-type': 'error',
@@ -145,7 +124,7 @@ module.exports = {
       'react/no-danger': 'error',
       'react/no-danger-with-children': 'error',
       'react/no-unused-prop-types': 'error',
-      'react/no-unstable-nested-components': ['off' | 'warn' | 'error', { allowAsProps: true | false }],
+      'react/no-unstable-nested-components': 'off',
       'react/prefer-stateless-function': 'error',
       'react/prop-types': 'off',
       'react/self-closing-comp': 'warn',
@@ -157,12 +136,12 @@ module.exports = {
    settings: {
       'import/resolver': {
          node: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'], // Các phần mở rộng mà ESLint sẽ sử dụng khi giải quyết import
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
          },
-         typescript: true, // Cho phép giải quyết các import TypeScript
+         typescript: true,
       },
       react: {
-         version: 'detect', // Tự động phát hiện phiên bản React đang sử dụng
+         version: 'detect',
       },
    },
 };

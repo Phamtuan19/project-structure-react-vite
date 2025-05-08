@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axiosInstance from './axios-instance';
 import { saveAs } from 'file-saver';
