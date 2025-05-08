@@ -1,14 +1,20 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# Thông báo trước khi thực hiện
+echo "Running lint and format fix..."
+
 # Kiểm tra và chạy lint/format tùy vào package manager
 if [ -f yarn.lock ]; then
+  echo "Using Yarn... Running lint and format fix"
   yarn lint:fix
   yarn format:fix
 elif [ -f pnpm-lock.yaml ]; then
+  echo "Using PNPM... Running lint and format fix"
   pnpm lint:fix
   pnpm format:fix
 else
+  echo "Using NPM... Running lint and format fix"
   npm run lint:fix
   npm run format:fix
 fi

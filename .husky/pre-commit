@@ -1,5 +1,5 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# Kiểm tra thông điệp commit với commitlint
+echo "Running commitlint..."
 
 # Kiểm tra xem công cụ quản lý gói nào đang được sử dụng
 if [ -f "package-lock.json" ]; then
