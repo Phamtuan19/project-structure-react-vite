@@ -1,20 +1,26 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Thông báo trước khi thực hiện
-echo "Running lint and format fix..."
+echo "Running commit message lint..."
 
-# Kiểm tra và chạy lint/format tùy vào package manager
+# Xác định package manager
 if [ -f yarn.lock ]; then
-  echo "Using Yarn... Running lint and format fix"
-  yarn lint:fix
-  yarn format:fix
+  PM="yarn"
 elif [ -f pnpm-lock.yaml ]; then
-  echo "Using PNPM... Running lint and format fix"
-  pnpm lint:fix
-  pnpm format:fix
+  PM="pnpm"
+elif [ -f package-lock.json ]; then
+  PM="npm"
 else
-  echo "Using NPM... Running lint and format fix"
-  npm run lint:fix
-  npm run format:fix
+  echo "❌ No recognized package manager lock file found!"
+  exit 1
+fi
+
+# Lint commit message
+npx --no -- commitlint --edit "$1"
+
+# Nếu cần có thể format + lint lại code luôn ở đây
+if [ "$PM" = "npm" ]; then
+  npm run lint:fix && npm run format:fix
+else
+  $PM lint:fix && $PM format:fix
 fi
