@@ -30,7 +30,7 @@ export const openNotification = (
 
    notificationApi[type]({
       ...rest,
-      duration: 10000000,
+      duration: 3,
       message,
       placement,
       showProgress,
