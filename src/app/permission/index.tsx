@@ -27,7 +27,7 @@ const flattenedRoutes = flattenRoutes(ROUTES);
 export const Permission = () => {
    const auth = useAuth();
 
-   const { isAuthentication, isLoading } = auth;
+   const { isAuthenticated, isLoading } = auth;
 
    const userRoles: Role[] = [];
 
@@ -50,7 +50,7 @@ export const Permission = () => {
        * User is unauthenticated.
        * Redirected to the unauthorized redirect URL.
        */
-      if (!isAuthentication && !isLoading) {
+      if (!isAuthenticated && !isLoading) {
          return navigate(UNAUTHORIZED_REDIRECT_URL);
       } else {
          /**
@@ -89,7 +89,7 @@ export const Permission = () => {
        */
       const userHasPermission = checkUserPermission({
          routePermissions: matchedRouteConfig?.auth as never,
-         isAuthenticatedUser: isAuthentication,
+         isAuthenticatedUser: isAuthenticated,
          userRoles,
       });
 
@@ -105,7 +105,7 @@ export const Permission = () => {
        * If user is member but don't have permission to view the route
        * redirected to sign in redirect URL.
        */
-      if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN && isAuthentication) {
+      if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN && isAuthenticated) {
          setSessionRedirectUrl(SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL);
       }
 
@@ -120,7 +120,7 @@ export const Permission = () => {
       if (!access) {
          redirectRoute();
       }
-   }, [pathname, isAuthentication, userRoles]);
+   }, [pathname, isAuthenticated, userRoles]);
 
    return <>{routes}</>;
 };

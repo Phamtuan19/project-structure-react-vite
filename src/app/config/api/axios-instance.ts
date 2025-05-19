@@ -56,7 +56,7 @@ const createInstance = (): AxiosInstance => {
       (response: AxiosResponse): any => {
          return response?.data ?? response;
       },
-      async (error: AxiosError<HandleErrorApiResponse>) => {
+      async (error: AxiosError<ErrorApiResponse>) => {
          const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
          const data = error.response?.data;
 

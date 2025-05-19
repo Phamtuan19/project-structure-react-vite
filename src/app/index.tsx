@@ -1,7 +1,5 @@
 import { BrowserRouter } from 'react-router';
 import { Permission } from './permission';
-import { Provider } from 'react-redux';
-import store from '@redux/store';
 import { focusManager, QueryClient, QueryClientProvider } from 'react-query';
 
 import '@app/config/i18n';
@@ -15,16 +13,14 @@ focusManager.setFocused(false);
 
 const App = () => {
    return (
-      <Provider store={store}>
-         <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-               <ConfigProvider theme={themeAntdConfig}>
-                  <Permission />
-                  <NotificationProvider />
-               </ConfigProvider>
-            </BrowserRouter>
-         </QueryClientProvider>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+         <BrowserRouter>
+            <ConfigProvider theme={themeAntdConfig}>
+               <Permission />
+               <NotificationProvider />
+            </ConfigProvider>
+         </BrowserRouter>
+      </QueryClientProvider>
    );
 };
 

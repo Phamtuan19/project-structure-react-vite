@@ -37,8 +37,8 @@
          "@pages": ["src/pages"],
          "@pages/*": ["src/pages/*"],
 
-         "@redux": ["src/redux"],
-         "@redux/*": ["src/redux/*"],
+         "@store": ["src/store"],
+         "@store/*": ["src/store/*"],
 
          "@routes": ["src/routes"],
          "@routes/*": ["src/routes/*"],

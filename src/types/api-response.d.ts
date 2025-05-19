@@ -1,18 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-interface AxiosResponseData<TData = Record<string, any>> {
-   map: any;
-   success: boolean;
-   message: string;
-   data: TData;
-}
-
-interface HandleErrorApi {
-   data: any;
-   success: boolean;
-   statusCode: number;
-   message: { [key: string]: string[] };
-}
-
 type ResponseStatus = 0 | 1; // 1 : lỗi, 0: Success
 
 /**
@@ -27,12 +12,12 @@ type ResponseStatus = 0 | 1; // 1 : lỗi, 0: Success
  * - `path`: Endpoint gây lỗi
  * - `code`: Trạng thái trả về (0: thành công, 1: lỗi)
  */
-interface HandleErrorApiResponse<T = any> {
+interface ErrorApiResponse<TData = unknown> {
    code: ResponseStatus;
    statusCode: number;
    message: string;
    error?: string;
-   data?: T;
+   data?: TData;
    timestamp?: string;
    path?: string;
 }
@@ -48,12 +33,12 @@ interface HandleErrorApiResponse<T = any> {
  * - `path`: Endpoint tương ứng
  * - `code`: Trạng thái trả về (0: thành công, 1: lỗi)
  */
-interface SuccessResponsePaging<T> {
+interface SuccessResponsePaging<TData = unknown> {
    code: ResponseStatus;
    statusCode: number;
    message: string;
    data: {
-      content: T[];
+      content: TData[];
       totalElements: number;
       totalPages: number;
       page: number;
@@ -62,6 +47,31 @@ interface SuccessResponsePaging<T> {
       hasNext: boolean;
       hasPrevious: boolean;
    };
+   timestamp?: string;
+   path?: string;
+}
+interface SuccessResponseNonPaging<TData = unknown> {
+   code: ResponseStatus;
+   statusCode: number;
+   message: string;
+   data: {
+      content: TData;
+      totalElements: number;
+      totalPages: number;
+      page: number;
+      size: number;
+
+      hasNext: boolean;
+      hasPrevious: boolean;
+   };
+   timestamp?: string;
+   path?: string;
+}
+interface SuccessResponse<TData = unknown> {
+   code: ResponseStatus;
+   statusCode: number;
+   message: string;
+   data: TData;
    timestamp?: string;
    path?: string;
 }

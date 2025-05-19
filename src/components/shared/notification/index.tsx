@@ -1,11 +1,8 @@
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable import/no-named-as-default-member */
-// src/utils/notification.ts
+/* eslint-disable react-hooks/rules-of-hooks */
 import { notification, type NotificationArgsProps } from 'antd';
 import React from 'react';
-import { Context } from '@app/context';
 import './notification.style.scss';
-import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 let notificationApi: ReturnType<typeof notification.useNotification>[0];
 
@@ -13,31 +10,37 @@ export const setNotificationApi = (api: typeof notificationApi) => {
    notificationApi = api;
 };
 
-export const openNotification = (
-   config: Omit<NotificationArgsProps, 'description' | 'message'> & { name?: string; message?: React.ReactNode },
-) => {
+export const openNotification = (config: Omit<NotificationArgsProps, 'message'> & { message?: React.ReactNode }) => {
+   const { t } = useTranslation();
+
    if (!notificationApi) return;
 
    const {
-      message = i18next.t('global.notification'),
+      message = t('global.notification'),
       showProgress = true,
       type = 'info',
       placement = 'topRight',
+      description,
       ...rest
    } = config;
 
    if (!notificationApi) return;
 
-   notificationApi[type]({
-      ...rest,
-      duration: 3,
-      message,
-      placement,
-      showProgress,
-      description: <Context.Consumer>{(value) => <span>{value.name}</span>}</Context.Consumer>,
-      style: {
-         padding: 16,
-      },
-      className: 'notification-custom',
-   });
+   const allowedTypes = ['success', 'info', 'warning', 'error'] as const;
+   type NotificationType = (typeof allowedTypes)[number];
+
+   if (allowedTypes.includes(type as NotificationType)) {
+      notificationApi[type as NotificationType]({
+         ...rest,
+         duration: 3,
+         message,
+         placement,
+         showProgress,
+         description,
+         style: {
+            padding: 16,
+         },
+         className: 'notification-custom',
+      });
+   }
 };

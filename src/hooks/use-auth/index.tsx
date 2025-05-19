@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useSelector } from 'react-redux';
-import type { RootState } from '@redux/rootReducer';
+import { useAuthStore, type AuthStore } from '@store';
 
 export const useAuth = () => {
    //    const dispatch: any = useDispatch();
-   const auth = useSelector((state: RootState) => state.auth);
+   const auth = useAuthStore((state: AuthStore) => state);
 
    // const authRefreshToken = () => {
    //    return dispatch(actionRefreshToken());
    // };
 
-   const authLogin = (data: AxiosResponseData) => {
+   const autSignin = () => {
       //   dispatch(actionLoginReducer(data));
    };
 
@@ -23,5 +21,5 @@ export const useAuth = () => {
       //   dispatch(actionLogoutReducer());
    };
 
-   return { ...auth, authLogin, authGetUser, authLogout };
+   return { ...auth, autSignin, authGetUser, authLogout };
 };

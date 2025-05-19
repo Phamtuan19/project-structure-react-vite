@@ -18,7 +18,7 @@ const Signin = () => {
             type="primary"
             onClick={() =>
                openNotification({
-                  name: 'Hello',
+                  description: 'Hello',
                })
             }
             icon={<RadiusUprightOutlined />}
