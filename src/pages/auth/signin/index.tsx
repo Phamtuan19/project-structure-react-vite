@@ -1,10 +1,13 @@
 /* eslint-disable import/no-named-as-default-member */
 import { RadiusUprightOutlined } from '@ant-design/icons';
 import { openNotification, SvgIcon } from '@components';
+import { useTitle } from '@hooks';
 import { Button, Typography } from 'antd';
 import i18next from 'i18next';
 
 const Signin = () => {
+   useTitle('Đăng nhập');
+
    return (
       <div className="flex flex-1 flex-col items-center justify-center">
          {i18next.t('global.language')}
