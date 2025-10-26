@@ -3,7 +3,7 @@ import { loadable, type RouteProps } from '@app/routes';
 
 export const authRoute: RouteProps = {
    path: '/',
-   element: loadable({ modules: 'layouts', path: 'main-layout', fullScreen: true }),
+   //    element: loadable({ modules: 'layouts', path: 'main-layout', fullScreen: true }),
    auth: false,
 
    children: [

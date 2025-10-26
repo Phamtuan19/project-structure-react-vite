@@ -43,14 +43,14 @@ const useAuthStore = create(
    persist(
       devtools(createAuthStore, {
          // Tên này dùng để hiển thị trong Zustand DevTools,
-         // giúp bạn dễ dàng nhận biết store này khi debug
+         // giúp dễ dàng nhận biết store này khi debug
          name: 'AuthStore',
          enabled: isDev,
       }),
       {
          // Tên key dùng để lưu dữ liệu store vào sessionStorage,
          name: 'authStorage',
-         // Khi mở sessionStorage trong trình duyệt, bạn sẽ thấy key này chứa dữ liệu của store
+         // Khi mở sessionStorage trong trình duyệt, sẽ thấy key này chứa dữ liệu của store
          storage: createJSONStorage(() => sessionStorage),
 
          onRehydrateStorage: () => (state) => {

@@ -1,32 +1,47 @@
-/* eslint-disable import/no-named-as-default-member */
-import { RadiusUprightOutlined } from '@ant-design/icons';
-import { openNotification, SvgIcon } from '@components';
-import { useTitle } from '@hooks';
-import { Button, Typography } from 'antd';
-import i18next from 'i18next';
+import React from 'react';
+import { Button, Card, Input, Typography } from 'antd';
+import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { ControllerInput, ControllerInputPassword } from '@components';
 
-const Signin = () => {
-   useTitle('Đăng nhập');
+type LoginFormValues = {
+   username: string;
+   password: string;
+};
+
+const Login = () => {
+   const { t } = useTranslation();
+   const {
+      control,
+      handleSubmit,
+      formState: { errors, isSubmitting },
+   } = useForm<LoginFormValues>();
+
+   const onSubmit = async (data: LoginFormValues) => {
+      console.log('Login data:', data);
+      // TODO: gọi API login
+   };
 
    return (
-      <div className="flex flex-1 flex-col items-center justify-center">
-         {i18next.t('global.language')}
-         <Typography.Title level={3}>Signin</Typography.Title>
-         <SvgIcon name="react" width={300} height={300} />
+      <div className="flex h-screen items-center justify-center bg-gray-50">
+         <Card className="w-[360px] rounded-xl shadow-lg">
+            <Typography.Title level={2} className="text-center">
+               {t('signin.title')}
+            </Typography.Title>
 
-         <Button
-            type="primary"
-            onClick={() =>
-               openNotification({
-                  description: 'Hello',
-               })
-            }
-            icon={<RadiusUprightOutlined />}
-         >
-            topRight
-         </Button>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+               <ControllerInput label={t('signin.username')} name="username" control={control} />
+
+               <ControllerInputPassword label={t('signin.password')} name="password" control={control} />
+
+               {/* Submit */}
+               <Button type="primary" htmlType="submit" loading={isSubmitting} className="mt-2">
+                  {t('signin.submit')}
+               </Button>
+            </form>
+         </Card>
       </div>
    );
 };
 
-export default Signin;
+export default Login;
