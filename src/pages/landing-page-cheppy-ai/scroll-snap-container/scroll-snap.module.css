@@ -1,0 +1,27 @@
+.container {
+   height: 100vh;
+   overflow-y: scroll;
+   scroll-snap-type: y mandatory;
+   scroll-behavior: smooth;
+}
+
+.frame {
+   height: 100vh;
+   width: 100%;
+   scroll-snap-align: start;
+   position: relative;
+   overflow: hidden;
+}
+
+.scrollableFrame {
+   height: 100vh;
+   width: 100%;
+   scroll-snap-align: start;
+   position: relative;
+
+   overflow-y: auto;
+   overflow-x: hidden;
+
+   scroll-behavior: smooth;
+   -webkit-overflow-scrolling: touch;
+}
