@@ -1,5 +1,5 @@
 import { useSvgIcon } from '@hooks';
-import { type ComponentProps } from 'react';
+import { type ComponentProps, type ElementType } from 'react';
 
 type SvgIconProps = ComponentProps<'svg'> & {
    name: string;
@@ -23,7 +23,9 @@ const SvgIcon = ({ name, ...props }: SvgIconProps) => {
       return <svg width={width} height={height} fill="none" viewBox={`0 0 ${width} ${height}`} />;
    }
 
-   return <Icon {...props} />;
+   const Component = Icon as ElementType<React.SVGProps<SVGSVGElement>>;
+
+   return <Component {...props} />;
 };
 
 export default SvgIcon;
