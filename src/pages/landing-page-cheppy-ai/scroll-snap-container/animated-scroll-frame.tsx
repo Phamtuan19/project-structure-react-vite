@@ -39,7 +39,7 @@ export const AnimatedScrollFrame: FC<ScrollFrameProps> = ({ children, id, rootRe
          }}
       >
          {/* 3. Bọc nội dung bên trong để áp dụng animation */}
-         <motion.div variants={itemVariants} style={{ width: '100%', height: '100%', position: 'relative' }}>
+         <motion.div variants={itemVariants} style={{ width: '100%', height: '100vh', position: 'relative' }}>
             {children}
          </motion.div>
       </motion.section>

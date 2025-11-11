@@ -1,12 +1,12 @@
 .container {
-   height: 100vh;
+   height: 100dvb;
    overflow-y: scroll;
    scroll-snap-type: y mandatory;
    scroll-behavior: smooth;
 }
 
 .frame {
-   height: 100vh;
+   height: 100dvb;
    width: 100%;
    scroll-snap-align: start;
    position: relative;
@@ -14,7 +14,7 @@
 }
 
 .scrollableFrame {
-   height: 100vh;
+   height: 100dvb;
    width: 100%;
    scroll-snap-align: start;
    position: relative;

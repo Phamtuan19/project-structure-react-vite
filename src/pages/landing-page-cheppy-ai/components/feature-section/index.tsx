@@ -23,25 +23,25 @@ const FEATURE_LIST = [
 const FeatureSection = () => {
    return (
       <section
-         className="relative flex h-screen w-full flex-col !justify-between bg-gray-800 bg-cover bg-center bg-no-repeat"
+         className="relative flex h-svh w-full flex-col justify-between! bg-gray-800 bg-cover bg-center bg-no-repeat"
          style={{ backgroundImage: `url(${featureBg})` }}
       >
-         <div className="!pt-20">
+         <div className="pt-16">
             <div className="flex items-center justify-center">
                <AnimatedHeading
                   text="Ứng dụng học tiếng Anh game hóa với AI"
-                  className="transform text-center text-4xl font-extrabold text-black"
-                  styleItem={{ WebkitTextStroke: '1.5px #FADE8E' }}
+                  className="font-sf text-stroke-yellow justify-start text-center text-4xl leading-[51px] font-bold text-lime-800"
+                  styleItem={{ WebkitTextStroke: '1px #FADE8E' }}
                />
             </div>
          </div>
          <div className="flex flex-col gap-3">
-            <div className="!mt-10 grid h-fit grid-cols-1">
+            <div className="mt-6 grid h-fit grid-cols-1">
                <Slider
                   items={FEATURE_LIST}
                   autoPlayInterval={6000}
                   renderItem={(feature) => (
-                     <div className="flex flex-col items-center gap-4 !px-4">
+                     <div className="flex flex-col items-center gap-4 px-4!">
                         <div className="">
                            <ImageLazy src={feature.image} alt={feature.image} className="h-auto w-full" />
                         </div>
