@@ -1,6 +1,5 @@
-import React from 'react';
-import { Button, Card, Input, Typography } from 'antd';
-import { useForm, Controller } from 'react-hook-form';
+import { Button, Card, Typography } from 'antd';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ControllerInput, ControllerInputPassword } from '@components';
 
@@ -14,7 +13,7 @@ const Login = () => {
    const {
       control,
       handleSubmit,
-      formState: { errors, isSubmitting },
+      formState: { isSubmitting },
    } = useForm<LoginFormValues>();
 
    const onSubmit = async (data: LoginFormValues) => {

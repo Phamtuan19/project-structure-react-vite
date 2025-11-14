@@ -4,7 +4,18 @@
       <meta charset="UTF-8" />
       <link rel="icon" type="image/svg+xml" href="/vite.svg" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Vite + React + TS</title>
+
+      <!-- DNS + Connection Warmup -->
+      <link rel="dns-prefetch" href="https://cdn.yourdomain.com" />
+      <link rel="preconnect" href="https://cdn.yourdomain.com" crossorigin />
+
+      <!-- Preload LCP Image (ảnh banner mở trang) -->
+      <link rel="preload" as="image" href="/images/hero.avif" />
+
+      <!-- Preload Fonts (nếu dùng font custom) -->
+      <!-- <link rel="preload" href="/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin /> -->
+
+      <title>%VITE_APP_NAME%</title>
    </head>
    <body>
       <div id="root"></div>

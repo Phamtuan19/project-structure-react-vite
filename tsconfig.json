@@ -52,7 +52,7 @@
          "@utils": ["src/utils"],
          "@utils/*": ["src/utils/*"],
 
-         "~/*": ["src/*"]
+         "@/*": ["src/*"]
       },
 
       "resolveJsonModule": true,

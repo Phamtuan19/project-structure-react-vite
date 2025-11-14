@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react-swc'; // Sử dụng plugin React SWC cho Vite để tối ưu hóa React build
 import path from 'path';
-import { defineConfig } from 'vite'; // Hàm để định nghĩa cấu hình Vite
+import { defineConfig, loadEnv } from 'vite'; // Hàm để định nghĩa cấu hình Vite
 import { checker } from 'vite-plugin-checker'; // Kiểm tra lỗi TypeScript
 import dynamicImport from 'vite-plugin-dynamic-import'; // Hỗ trợ dynamic imports
 import svgr from 'vite-plugin-svgr'; // Vite plugin để xử lý SVG như React components
@@ -10,8 +10,11 @@ import tailwindcss from '@tailwindcss/vite'; // Hỗ trợ Tailwind CSS
 import strip from '@rollup/plugin-strip'; // Loại bỏ console.log và debugger trong quá trình build
 
 // https://vite.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+   const isDev = mode === 'development';
+
    return {
+      base: '/',
       plugins: [
          react(),
          svgr({
@@ -20,7 +23,7 @@ export default defineConfig(() => {
                icon: true, // Cho phép dùng SVG như một icon
                ref: true, // Cho phép dùng ref trên SVG
                titleProp: true, // Cho phép thêm title vào SVG
-               svgo: false, // Tắt tối ưu hóa SVG
+               svgo: !isDev, // Tắt tối ưu hóa SVG
                svgoConfig: require('./svgo.config.cjs'), // Tải cấu hình SVGO từ file riêng
             },
             include: '**/*.svg', // Áp dụng plugin cho tất cả file .svg
@@ -42,10 +45,17 @@ export default defineConfig(() => {
       ],
       server: {
          port: 8088,
+
+         hmr: {
+            overlay: false, // tránh crash giao diện dev khi gặp error
+         },
+         watch: {
+            usePolling: isDev, // tự động bật polling khi chạy trong Docker/WSL
+         },
       },
       resolve: {
          alias: {
-            '~': path.resolve(__dirname, './src'),
+            '@': path.resolve(__dirname, './src'),
          },
       },
       build: {
@@ -67,11 +77,10 @@ export default defineConfig(() => {
                // Tạo các chunk riêng cho các thư viện bên ngoài và components
                manualChunks(id) {
                   if (id.includes('node_modules')) {
-                     return 'vendor'; // Tách các thư viện từ node_modules thành 'vendor' chunk
+                     if (id.includes('react')) return 'react-vendor';
+                     if (id.includes('@mui') || id.includes('antd')) return 'ui-vendor';
+                     return 'vendor';
                   }
-                  //   if (id.includes('src/components/')) {
-                  //      return 'components'; // Tách các component thành 'components' chunk
-                  //   }
                },
             },
             plugins: [
@@ -100,10 +109,16 @@ export default defineConfig(() => {
             },
          },
       },
+      preview: {
+         headers: {
+            'Cache-Control': 'public, max-age=31536000, immutable',
+         },
+      },
 
       // Định nghĩa môi trường sản xuất
       define: {
-         'process.env.NODE_ENV': '"production"', // Đảm bảo mã được tối ưu hóa cho production
+         'process.env.NODE_ENV': JSON.stringify(mode), // Đảm bảo mã được tối ưu hóa cho production
+         global: 'window',
       },
    };
 });

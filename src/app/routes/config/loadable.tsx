@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import loadable from '@loadable/component';
 import { Loading, Splash } from '@components';
 import delay from 'p-min-delay';
@@ -20,13 +21,25 @@ type LazyProps = {
  * @returns The lazy-loaded component.
  */
 
-const loadableWrapper = ({ modules, path, fullScreen = false, delayTime = 0 }: LazyProps) => {
-   const newPath = path.split('.').includes('tsx') ? path : path + '/index.tsx';
+const pages = import.meta.glob<{ default: React.ComponentType }>('~/pages/**/*.tsx');
+const modulesMap = import.meta.glob<{ default: React.ComponentType }>('~/modules/**/*.tsx');
 
-   const Element = loadable(() => delay(import(`~/${modules ? `${modules}` : 'pages'}/${newPath}`), delayTime), {
+const loadableWrapper = ({ modules, path, fullScreen = false, delayTime = 0 }: LazyProps) => {
+   const maps = modules ? modulesMap : pages;
+   const newPath = path.endsWith('.tsx') ? path : `${path}/index.tsx`;
+
+   const base = modules ? '/src/modules' : '/src/pages';
+   const key = `${base}/${newPath}`;
+
+   const importer = maps[key];
+   if (!importer) {
+      console.error(`Component not found: ${key}`);
+      return <div>Component not found</div>;
+   }
+
+   const Element = loadable(() => delay(importer(), delayTime), {
       fallback: fullScreen ? <Splash /> : <Loading />,
    });
-
    return <Element />;
 };
 
