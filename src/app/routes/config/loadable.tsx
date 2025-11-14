@@ -21,8 +21,8 @@ type LazyProps = {
  * @returns The lazy-loaded component.
  */
 
-const pages = import.meta.glob<{ default: React.ComponentType }>('~/pages/**/*.tsx');
-const modulesMap = import.meta.glob<{ default: React.ComponentType }>('~/modules/**/*.tsx');
+const pages = import.meta.glob<{ default: React.ComponentType }>('@/pages/**/*.tsx');
+const modulesMap = import.meta.glob<{ default: React.ComponentType }>('@/modules/**/*.tsx');
 
 const loadableWrapper = ({ modules, path, fullScreen = false, delayTime = 0 }: LazyProps) => {
    const maps = modules ? modulesMap : pages;

@@ -1,6 +1,6 @@
 import type { Role } from '@app/constants';
+import type { OverrideProps } from '@types';
 import type { RouteObject } from 'react-router';
-import type { OverrideProps } from '~/types';
 
 /**
  * The props for the Route.
