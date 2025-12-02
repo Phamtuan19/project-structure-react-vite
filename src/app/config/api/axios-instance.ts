@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, {
    AxiosError,
@@ -10,6 +9,8 @@ import axios, {
 import { SETTINGS_CONFIG } from '../settings';
 import { message } from 'antd';
 import middleware from './middleware';
+import { API_END_POINT, ROUTE_PATH } from '@constants';
+import { eraseCookie, getCookie, setCookie } from '@utils';
 
 let isRefreshing = false;
 let failedQueue: {
@@ -54,7 +55,7 @@ const createInstance = (): AxiosInstance => {
 
    axiosInstance.interceptors.response.use(
       (response: AxiosResponse): any => {
-         return response?.data ?? response;
+         return response;
       },
       async (error: AxiosError<ErrorApiResponse>) => {
          const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
@@ -76,13 +77,16 @@ const createInstance = (): AxiosInstance => {
             isRefreshing = true;
 
             try {
-               const refreshToken = localStorage.getItem('refresh_token');
-               const response = await axios.post(`${SETTINGS_CONFIG.API_URL}/auth/refresh-token`, {
-                  refresh_token: refreshToken,
+               const refreshToken = getCookie(SETTINGS_CONFIG.REFRESH_TOKEN_KEY);
+
+               const response = await axios.post(`${SETTINGS_CONFIG.API_URL}${API_END_POINT.REFRESH_TOKEN}`, {
+                  refreshToken: refreshToken,
                });
 
-               const newAccessToken = response.data.access_token;
-               localStorage.setItem('access_token', newAccessToken);
+               const newAccessToken = response.data.data.accessToken;
+               const newRefreshToken = response.data.data.refreshToken;
+               setCookie(SETTINGS_CONFIG.ACCESS_TOKEN_KEY, newAccessToken);
+               setCookie(SETTINGS_CONFIG.REFRESH_TOKEN_KEY, newRefreshToken);
 
                processQueue(null, newAccessToken);
 
@@ -94,9 +98,9 @@ const createInstance = (): AxiosInstance => {
                return axiosInstance(originalRequest);
             } catch (err) {
                processQueue(err, null);
-               localStorage.removeItem('access_token');
-               localStorage.removeItem('refresh_token');
-               window.location.href = '/login';
+               eraseCookie(SETTINGS_CONFIG.ACCESS_TOKEN_KEY);
+               eraseCookie(SETTINGS_CONFIG.REFRESH_TOKEN_KEY);
+               window.location.href = ROUTE_PATH.SIGN_IN;
                return Promise.reject(err);
             } finally {
                isRefreshing = false;

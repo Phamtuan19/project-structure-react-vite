@@ -1,7 +1,6 @@
 import type { UserAuthInfo } from '@types';
 
 export interface AuthState {
-   token: string | null;
    user: UserAuthInfo | null;
    isAuthenticated: boolean;
    isInitialized: boolean;
@@ -9,11 +8,10 @@ export interface AuthState {
 }
 
 export interface AuthActions {
-   login: (user: UserAuthInfo) => void;
+   login: () => void;
    logout: () => void;
    setInitialized: (initialized: boolean) => void;
    setLoading: (loading: boolean) => void;
-   setToken: (token: string | null) => void;
    setUser: (user: UserAuthInfo | null) => void;
 }
 

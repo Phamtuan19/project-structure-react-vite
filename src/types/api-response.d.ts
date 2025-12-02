@@ -13,13 +13,13 @@ type ResponseStatus = 0 | 1; // 1 : lỗi, 0: Success
  * - `code`: Trạng thái trả về (0: thành công, 1: lỗi)
  */
 interface ErrorApiResponse<TData = unknown> {
+   success: boolean;
    code: ResponseStatus;
-   statusCode: number;
    message: string;
-   error?: string;
-   data?: TData;
+   msg: string;
    timestamp?: string;
    path?: string;
+   data?: TData;
 }
 
 /**
@@ -34,9 +34,12 @@ interface ErrorApiResponse<TData = unknown> {
  * - `code`: Trạng thái trả về (0: thành công, 1: lỗi)
  */
 interface SuccessResponsePaging<TData = unknown> {
+   success: boolean;
    code: ResponseStatus;
-   statusCode: number;
    message: string;
+   msg: string;
+   timestamp?: string;
+   path?: string;
    data: {
       content: TData[];
       totalElements: number;
@@ -47,13 +50,14 @@ interface SuccessResponsePaging<TData = unknown> {
       hasNext: boolean;
       hasPrevious: boolean;
    };
-   timestamp?: string;
-   path?: string;
 }
 interface SuccessResponseNonPaging<TData = unknown> {
+   success: boolean;
    code: ResponseStatus;
-   statusCode: number;
    message: string;
+   msg: string;
+   timestamp?: string;
+   path?: string;
    data: {
       content: TData;
       totalElements: number;
@@ -64,14 +68,13 @@ interface SuccessResponseNonPaging<TData = unknown> {
       hasNext: boolean;
       hasPrevious: boolean;
    };
-   timestamp?: string;
-   path?: string;
 }
 interface SuccessResponse<TData = unknown> {
+   success: boolean;
    code: ResponseStatus;
-   statusCode: number;
    message: string;
+   msg: string;
+   timestamp: string;
+   path: string;
    data: TData;
-   timestamp?: string;
-   path?: string;
 }

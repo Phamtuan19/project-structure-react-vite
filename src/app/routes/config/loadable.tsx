@@ -7,8 +7,7 @@ type LazyProps = {
    path: string;
    delayTime?: number;
    fullScreen?: boolean;
-   modules?: string;
-   layout?: string;
+   layout?: boolean;
 };
 
 /**
@@ -22,13 +21,13 @@ type LazyProps = {
  */
 
 const pages = import.meta.glob<{ default: React.ComponentType }>('@/pages/**/*.tsx');
-const modulesMap = import.meta.glob<{ default: React.ComponentType }>('@/modules/**/*.tsx');
+const layoutMap = import.meta.glob<{ default: React.ComponentType }>('@/layouts/**/*.tsx');
 
-const loadableWrapper = ({ modules, path, fullScreen = false, delayTime = 0 }: LazyProps) => {
-   const maps = modules ? modulesMap : pages;
+const loadableWrapper = ({ layout = false, path, fullScreen = false, delayTime = 0 }: LazyProps) => {
+   const maps = layout ? layoutMap : pages;
    const newPath = path.endsWith('.tsx') ? path : `${path}/index.tsx`;
 
-   const base = modules ? '/src/modules' : '/src/pages';
+   const base = layout ? `/src/layouts` : '/src/pages';
    const key = `${base}/${newPath}`;
 
    const importer = maps[key];

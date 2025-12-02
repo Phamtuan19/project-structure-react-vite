@@ -7,15 +7,12 @@ const detectPackageManager = () => {
 const pm = detectPackageManager();
 
 module.exports = {
-   // Lệnh cho tất cả các file
-   '*': () => `${pm} run format:fix`,
+   // Format + Sort JSON cho các file thay đổi
+   '*.{json,md}': [`${pm} run format:fix`],
 
-   // Lệnh cho các file SVG
-   '*.svg': () => `${pm} run format:svg`,
+   // Format SVG
+   '*.svg': [`${pm} run format:svg`],
 
-   // Lệnh cho các file JS, JSX, TS, TSX
-   '*.{js,jsx,ts,tsx}': () => `${pm} run validate`,
-
-   // Loại bỏ dist khỏi các file sẽ được lint
-   '**/*': [`git diff --name-only --diff-filter=AM | grep -v '^dist/'`],
+   // Lint + Typecheck cho JS/TS
+   '*.{js,jsx,ts,tsx}': [`${pm} run lint:fix`, `${pm} run type:check`],
 };

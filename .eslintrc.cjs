@@ -22,7 +22,7 @@ module.exports = {
    ],
 
    // Danh sách các thư mục và file mà ESLint sẽ bỏ qua khi kiểm tra
-   ignorePatterns: ['dist', '.eslintrc.cjs', '*.config.js', 'vite.config.ts'],
+   ignorePatterns: ['**/*', '!src/**'],
 
    // Các cấu hình đặc biệt cho các loại file khác nhau
    overrides: [

@@ -5,6 +5,7 @@ import type { ChangeEvent } from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import FormLabel from './form-label';
+import { useTranslation } from 'react-i18next';
 
 interface ControllerInputPasswordType<TFieldValues extends FieldValues = FieldValues> extends InputProps {
    /**
@@ -54,6 +55,8 @@ const ControllerInputPassword = <TFieldValues extends FieldValues = FieldValues>
    onBlur,
    ...resProps
 }: ControllerInputPasswordType<TFieldValues>) => {
+   const { t } = useTranslation();
+
    return (
       <Controller
          name={name}
@@ -84,7 +87,9 @@ const ControllerInputPassword = <TFieldValues extends FieldValues = FieldValues>
                      />
 
                      {showError && fieldState?.error && (
-                        <Typography.Text className="pl-1 text-red-500">{fieldState?.error?.message}</Typography.Text>
+                        <Typography.Text className="pl-1 text-sm! text-red-500!">
+                           {t(fieldState.error.message as never)}
+                        </Typography.Text>
                      )}
                   </div>
                </div>

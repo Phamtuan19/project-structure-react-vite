@@ -11,5 +11,9 @@ const globalEn = {
       signin: 'Sign in page',
       register: 'Sign up page',
    },
+
+   profile: 'Profile',
+   setting: 'Setting',
+   logout: 'Logout',
 };
 export { globalEn };

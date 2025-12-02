@@ -11,6 +11,10 @@ const globalVi = {
       signin: 'Trang đăng nhập',
       register: 'Trang đăng ký',
    },
+
+   profile: 'Hồ sơ cá nhân',
+   setting: 'Cài đặt',
+   logout: 'Đăng xuất',
 };
 
 export { globalVi };
