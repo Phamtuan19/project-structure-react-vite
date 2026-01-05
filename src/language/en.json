@@ -1,0 +1,29 @@
+{
+   "auth.signin.errors.identifier_invalid": "Must be a valid email or username",
+   "auth.signin.errors.identifier_required": "Email or username is required",
+   "auth.signin.errors.password_required": "Password is required",
+   "auth.signin.forgot_password": "Forgot password?",
+   "auth.signin.password": "Password",
+   "auth.signin.submit": "Sign In",
+
+   "auth.signin.title": "Login",
+   "auth.signin.username": "Username",
+
+   "common.change_language": "Change language",
+
+   "common.language": "Language",
+   "common.logout": "Logout",
+   "common.notification": "Notification",
+
+   "common.page_title.register": "Sign up page",
+   "common.page_title.signin": "Sign in page",
+
+   "common.profile": "Profile",
+   "common.register": "Sign up",
+   "common.setting": "Setting",
+   "common.signin": "Sign in",
+
+   "menu.dashboard": "Dashboard",
+   "menu.settings": "Settings",
+   "menu.users": "Users"
+}

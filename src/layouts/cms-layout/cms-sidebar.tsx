@@ -26,7 +26,7 @@ const CmsSidebar: React.FC<CmsSidebarProps> = ({ collapsed, onToggleSidebar }) =
    return (
       <aside
          className={cn(
-            'fixed z-50 flex h-full flex-col bg-white shadow-lg transition-all duration-300 dark:bg-gray-900',
+            'fixed z-50 flex h-full flex-col overflow-hidden bg-white shadow-lg transition-all duration-300 dark:bg-gray-900',
             collapsed ? 'w-20' : 'w-52',
          )}
       >

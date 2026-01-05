@@ -8,12 +8,12 @@ export const cmsRoutes: RouteProps = {
    children: [
       {
          path: ROUTE_PATH.CMS_DASHBOARD,
-         element: loadable({ path: 'cms/dashboard', fullScreen: true }),
+         element: loadable({ path: 'cms/dashboard', fullScreen: false }),
          auth: ['ADMIN'],
       },
       {
          path: ROUTE_PATH.CMS_SETTING,
-         element: loadable({ path: 'cms/setting', fullScreen: true }),
+         element: loadable({ path: 'cms/setting', fullScreen: false }),
          auth: ['ADMIN'],
       },
    ],

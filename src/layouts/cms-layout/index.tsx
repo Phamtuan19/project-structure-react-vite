@@ -8,7 +8,7 @@ const CmsLayout: React.FC = () => {
    const [collapsed, setCollapsed] = useState(false);
 
    return (
-      <div className="flex h-screen w-full">
+      <div className="flex h-screen overflow-hidden">
          <CmsSidebar collapsed={collapsed} onToggleSidebar={() => setCollapsed(!collapsed)} />
 
          <div

@@ -103,18 +103,16 @@ export const Permission = () => {
 
       /**
        * If the user doesn't have permission to view the route and the current path is not an ignored path,
-       * set the session redirect URL to the current path.
+       * set the session redirect URL appropriately.
        */
       if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN) {
-         setSessionRedirectUrl(pathname);
-      }
-
-      /**
-       * If user is member but don't have permission to view the route
-       * redirected to sign in redirect URL.
-       */
-      if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN && isAuthenticated) {
-         setSessionRedirectUrl(SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL);
+         if (isAuthenticated) {
+            // Authenticated user without permission: redirect to home
+            setSessionRedirectUrl(SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL);
+         } else {
+            // Unauthenticated user: save current path for redirect after login
+            setSessionRedirectUrl(pathname);
+         }
       }
 
       /**

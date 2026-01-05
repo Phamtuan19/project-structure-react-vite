@@ -15,9 +15,9 @@ const CmsHeader: React.FC<CmsHeaderProps> = ({ collapsed, onToggleSidebar }) => 
 
    const userMenu = {
       items: [
-         { key: '1', icon: <FiUser />, label: t('global.profile') },
-         { key: '2', icon: <FiSettings />, label: t('global.setting') },
-         { key: '3', icon: <FiLogOut />, label: t('global.logout') },
+         { key: '1', icon: <FiUser />, label: t('common.profile') },
+         { key: '2', icon: <FiSettings />, label: t('common.setting') },
+         { key: '3', icon: <FiLogOut />, label: t('common.logout') },
       ],
       onclick: () => {},
    };
@@ -31,7 +31,7 @@ const CmsHeader: React.FC<CmsHeaderProps> = ({ collapsed, onToggleSidebar }) => 
    };
 
    return (
-      <Layout.Header className="flex items-center justify-end border-b border-gray-200 bg-white! px-6 py-2 shadow-lg transition-all">
+      <Layout.Header className="flex w-full items-center justify-end border-b border-gray-200 bg-white! px-4! py-2 shadow-lg transition-all">
          {/* Right */}
          <div className="flex items-center gap-8">
             {/* Notifications */}

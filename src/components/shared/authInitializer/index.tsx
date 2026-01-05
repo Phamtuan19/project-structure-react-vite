@@ -1,18 +1,17 @@
 import { SETTINGS_CONFIG } from '@app/config';
 import { useAuth } from '@hooks';
-import { useLoginNotification } from '@hooks/use-login-lotification';
+import { useLoginNotification } from '@hooks';
 import { getCookie } from '@utils';
 import React, { useEffect, useRef } from 'react';
 
 const AuthInitializer = (props: { children?: React.ReactNode }) => {
    const hasFetchedUser = useRef(false);
-
-   const { authGetUser, authLogout, user } = useAuth();
+   const { authGetUser, authLogout, isInitialized } = useAuth();
 
    useLoginNotification();
 
    useEffect(() => {
-      if (user && hasFetchedUser.current) return;
+      if (hasFetchedUser.current || isInitialized) return;
 
       const accessToken = getCookie(SETTINGS_CONFIG.ACCESS_TOKEN_KEY);
 
@@ -22,8 +21,7 @@ const AuthInitializer = (props: { children?: React.ReactNode }) => {
          authLogout();
       }
       hasFetchedUser.current = true;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, []);
+   }, [authGetUser, authLogout, isInitialized]);
 
    return <>{props.children}</>;
 };

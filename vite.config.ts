@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react-swc'; // Sử dụng plugin React SWC cho Vite để tối ưu hóa React build
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite'; // Hàm để định nghĩa cấu hình Vite
+import { defineConfig } from 'vite'; // Hàm để định nghĩa cấu hình Vite
 import { checker } from 'vite-plugin-checker'; // Kiểm tra lỗi TypeScript
 import dynamicImport from 'vite-plugin-dynamic-import'; // Hỗ trợ dynamic imports
 import svgr from 'vite-plugin-svgr'; // Vite plugin để xử lý SVG như React components

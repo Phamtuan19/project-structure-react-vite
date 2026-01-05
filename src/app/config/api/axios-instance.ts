@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, {
    AxiosError,
    type AxiosInstance,
@@ -14,18 +13,22 @@ import { eraseCookie, getCookie, setCookie } from '@utils';
 
 let isRefreshing = false;
 let failedQueue: {
-   resolve: (value?: any) => void;
-   reject: (error: any) => void;
+   resolve: (value?: unknown) => void;
+   reject: (error: unknown) => void;
    config: AxiosRequestConfig;
 }[] = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+let axiosInstanceRef: AxiosInstance | null = null;
+
+const processQueue = (error: unknown, token: string | null = null) => {
+   if (!axiosInstanceRef) return;
+
    failedQueue.forEach((p) => {
-      if (token) {
+      if (token && axiosInstanceRef) {
          if (p.config.headers) {
             p.config.headers['Authorization'] = `Bearer ${token}`;
          }
-         p.resolve(axios(p.config));
+         p.resolve(axiosInstanceRef(p.config));
       } else {
          p.reject(error);
       }
@@ -43,6 +46,7 @@ const createInstance = (): AxiosInstance => {
    };
 
    const axiosInstance: AxiosInstance = axios.create(config);
+   axiosInstanceRef = axiosInstance;
 
    axiosInstance.interceptors.request.use(
       (requestConfig: InternalAxiosRequestConfig) => {
@@ -54,7 +58,7 @@ const createInstance = (): AxiosInstance => {
    );
 
    axiosInstance.interceptors.response.use(
-      (response: AxiosResponse): any => {
+      (response: AxiosResponse): AxiosResponse => {
          return response;
       },
       async (error: AxiosError<ErrorApiResponse>) => {
@@ -79,7 +83,11 @@ const createInstance = (): AxiosInstance => {
             try {
                const refreshToken = getCookie(SETTINGS_CONFIG.REFRESH_TOKEN_KEY);
 
-               const response = await axios.post(`${SETTINGS_CONFIG.API_URL}${API_END_POINT.REFRESH_TOKEN}`, {
+               if (!refreshToken) {
+                  throw new Error('No refresh token available');
+               }
+
+               const response = await axiosInstance.post(API_END_POINT.REFRESH_TOKEN, {
                   refreshToken: refreshToken,
                });
 
@@ -114,4 +122,6 @@ const createInstance = (): AxiosInstance => {
    return axiosInstance;
 };
 
-export default createInstance();
+const axiosInstance = createInstance();
+
+export default axiosInstance;

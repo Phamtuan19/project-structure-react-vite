@@ -6,7 +6,7 @@ import { LOGIN_NOTIFICATION_KEY } from '@app/constants';
 import { useAuth } from '@hooks/use-auth';
 
 export const useLoginNotification = () => {
-   const { user, isAuthenticated, isInitialized } = useAuth();
+   const { user } = useAuth();
 
    useEffect(() => {
       if (!user) return;

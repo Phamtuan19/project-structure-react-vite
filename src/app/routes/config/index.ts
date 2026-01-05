@@ -1,3 +1,3 @@
 export * from './loadable';
 
-export * from './flattenRoutes';
+export * from './flatten-routes';

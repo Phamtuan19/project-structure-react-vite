@@ -13,10 +13,10 @@ const Login = () => {
 
    const { control, handleSubmit } = useForm<LoginFormValues>({
       resolver: zodResolver(loginSchema),
-      defaultValues:
-         import.meta.env.MODE === 'development'
-            ? { identifier: 'phamtuan19hd@gmail.com', password: 'admin1234' }
-            : { identifier: '', password: '' },
+      defaultValues: {
+         identifier: import.meta.env.VITE_DEV_USERNAME || '',
+         password: import.meta.env.VITE_DEV_PASSWORD || '',
+      },
    });
 
    const onSubmit = async (data: LoginFormValues) => {
