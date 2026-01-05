@@ -2,7 +2,7 @@ import LazyImage from '@components/shared/lazy-image';
 
 const Home = () => {
    return (
-      <div className="space-y-8 p-6">
+      <div className="">
          <div className="pet" />
          <LazyImage
             src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=6000&q=90"

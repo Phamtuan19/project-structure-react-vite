@@ -1,23 +1,30 @@
+# #!/bin/sh
+# . "$(dirname "$0")/_/husky.sh"
+
+# echo "Running pre-commit checks..."
+
+# # Xác định package manager
+# if [ -f yarn.lock ]; then
+#   PM="yarn"
+# elif [ -f pnpm-lock.yaml ]; then
+#   PM="pnpm"
+# elif [ -f package-lock.json ]; then
+#   PM="npm"
+# else
+#   echo "❌ No recognized package manager lock file found!"
+#   exit 1
+# fi
+
+# # Chạy format và lint
+# if [ "$PM" = "npm" ]; then
+#   npm run format:fix && npm run lint
+# else
+#   $PM format:fix && $PM lint
+# fi
+
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "Running pre-commit checks..."
+echo "🔍 Running pre-commit checks with lint-staged..."
 
-# Xác định package manager
-if [ -f yarn.lock ]; then
-  PM="yarn"
-elif [ -f pnpm-lock.yaml ]; then
-  PM="pnpm"
-elif [ -f package-lock.json ]; then
-  PM="npm"
-else
-  echo "❌ No recognized package manager lock file found!"
-  exit 1
-fi
-
-# Chạy format và lint
-if [ "$PM" = "npm" ]; then
-  npm run format:fix && npm run lint
-else
-  $PM format:fix && $PM lint
-fi
+npx lint-staged

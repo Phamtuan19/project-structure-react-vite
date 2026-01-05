@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate, useRoutes, useLocation, matchRoutes, type RouteObject } from 'react-router';
 import { SETTINGS_CONFIG } from '../config';
 import { flattenRoutes, ROUTES } from '../routes';
 import { getSessionRedirectUrl, resetSessionRedirectUrl, checkUserPermission, setSessionRedirectUrl } from '../utils';
 import type { Role } from '../constants';
-import { useAuth } from '@hooks';
+import { useAuth, useDeepCompareEffect } from '@hooks';
 import { ROUTE_PATH } from '@constants';
 
 const { UNAUTHORIZED_REDIRECT_URL, SIGN_IN_REDIRECT_URL } = SETTINGS_CONFIG;
@@ -27,15 +27,17 @@ const flattenedRoutes = flattenRoutes(ROUTES);
 export const Permission = () => {
    const auth = useAuth();
 
-   const { isAuthenticated, isLoading } = auth;
+   const { isAuthenticated, isInitialized, isLoading } = auth;
 
-   const userRoles: Role[] = [];
+   const userRoles: Role[] = useMemo(() => (auth.user ? [auth.user?.roles] : []), [auth.user?.roles]);
 
    const navigate = useNavigate();
 
    const routes = useRoutes(ROUTES as RouteObject[]);
 
    const { pathname } = useLocation();
+
+   const isAuthRoute = pathname.startsWith('/auth');
 
    /**
     * The function redirects the user to the appropriate URL based on their authentication status.
@@ -66,7 +68,9 @@ export const Permission = () => {
    /**
     * Checks if the user has access to the current route.
     */
-   useEffect(() => {
+   useDeepCompareEffect(() => {
+      if (!isInitialized || isLoading) return;
+
       const matchedRoutes = matchRoutes(flattenedRoutes as RouteObject[], location.pathname);
       const matched = matchedRoutes ? matchedRoutes[0] : false;
 
@@ -82,8 +86,6 @@ export const Permission = () => {
        */
       const matchedRouteConfig = flattenedRoutes.find((route) => route.path === matched.route.path);
 
-      //   const fieldsCommon = matchedRouteConfig?.fieldsCommon ?? [];
-
       /**
        * Checks if the user has permission to access route.
        */
@@ -93,20 +95,24 @@ export const Permission = () => {
          userRoles,
       });
 
-      /**
-       * If the user doesn't have permission to view the route and the current path is not an ignored path,
-       * set the session redirect URL to the current path.
-       */
-      if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN) {
-         setSessionRedirectUrl(pathname);
+      // 1. Nếu đã login nhưng đang ở page /auth → redirect đi
+      if (isAuthenticated && isAuthRoute) {
+         navigate(getSessionRedirectUrl() || SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL);
+         return;
       }
 
       /**
-       * If user is member but don't have permission to view the route
-       * redirected to sign in redirect URL.
+       * If the user doesn't have permission to view the route and the current path is not an ignored path,
+       * set the session redirect URL appropriately.
        */
-      if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN && isAuthenticated) {
-         setSessionRedirectUrl(SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL);
+      if (!userHasPermission && pathname !== ROUTE_PATH.SIGN_IN) {
+         if (isAuthenticated) {
+            // Authenticated user without permission: redirect to home
+            setSessionRedirectUrl(SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL);
+         } else {
+            // Unauthenticated user: save current path for redirect after login
+            setSessionRedirectUrl(pathname);
+         }
       }
 
       /**
@@ -120,7 +126,7 @@ export const Permission = () => {
       if (!access) {
          redirectRoute();
       }
-   }, [pathname, isAuthenticated, userRoles]);
+   }, [pathname, isAuthenticated, isInitialized, isLoading, userRoles.join(',')]);
 
    return <>{routes}</>;
 };

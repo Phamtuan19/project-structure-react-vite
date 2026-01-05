@@ -50,12 +50,12 @@ export const SETTINGS_CONFIG: ConfigProps = {
    /**
     * The key used to store the access token in local storage.
     */
-   ACCESS_TOKEN_KEY: 'access-token',
+   ACCESS_TOKEN_KEY: 'accessToken',
 
    /**
     * The key used to store the refresh token in local storage.
     */
-   REFRESH_TOKEN_KEY: 'refresh-token',
+   REFRESH_TOKEN_KEY: 'refreshToken',
 
    /**
     * The base URL for API requests, typically set via environment variables.
@@ -65,5 +65,12 @@ export const SETTINGS_CONFIG: ConfigProps = {
     *
     * Example: https://api.example.com/v1
     */
-   API_URL: import.meta.env.VITE_APP_API_URL as string,
+   API_URL: (() => {
+      const apiUrl = import.meta.env.VITE_APP_API_URL as string;
+      if (!apiUrl) {
+         console.error('VITE_APP_API_URL is not defined in environment variables');
+         return '';
+      }
+      return apiUrl;
+   })(),
 } as const;

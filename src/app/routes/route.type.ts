@@ -13,11 +13,4 @@ export type RouteProps = OverrideProps<RouteObject, { path?: string; children?: 
     * If auth is not empty, the route is only accessible to users with the specified roles.
     */
    auth?: boolean | Role[];
-   fieldsCommon?: string[];
-   authGuard?: boolean;
-   meta?: {
-      isAuth: boolean;
-      roles: string[];
-      title: string;
-   };
 };

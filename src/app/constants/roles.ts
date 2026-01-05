@@ -4,8 +4,8 @@ import { z } from 'zod';
  * Object containing the available roles in the application.
  */
 export const ROLE = {
-   USER: 'User',
-   ADMIN: 'Admin',
+   USER: 'USER',
+   ADMIN: 'ADMIN',
 } as const;
 
 /**

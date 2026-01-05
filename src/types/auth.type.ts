@@ -1,15 +1,18 @@
+import type { Role } from '@app/constants';
+
 export interface UserAuthInfo {
    _id: string;
-   code: string;
-   account_name: string;
-   full_name: string;
    email: string;
+   name: string;
+   avatar: string;
    phone: string;
-   avatar_url: string;
-   role_id: string;
-   isAdmin: boolean;
-   gender: string;
-   birth_day: string;
    address: string;
-   hire_date: string;
+   roles: Role;
+   isLock: false;
+   lastLogin: string;
+   isVerified: true;
+   isEmailVerified: true;
+   loginAttempts: 0;
+   createdAt: string;
+   updatedAt: string;
 }

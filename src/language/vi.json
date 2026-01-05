@@ -1,0 +1,28 @@
+{
+   "auth.signin.errors.identifier_invalid": "Phải là email hợp lệ hoặc username",
+   "auth.signin.errors.identifier_required": "Tài khoản đăng nhập không được để trống",
+   "auth.signin.errors.password_required": "Mật khẩu không được để trống",
+   "auth.signin.forgot_password": "Quên mật khẩu?",
+   "auth.signin.password": "Mật khẩu",
+   "auth.signin.submit": "Đăng nhập",
+
+   "auth.signin.title": "Đăng nhập",
+   "auth.signin.username": "Tên đăng nhập",
+   "common.change_language": "Thay đổi ngôn ngữ",
+   "common.language": "Ngôn ngữ",
+
+   "common.logout": "Đăng xuất",
+   "common.notification": "Thông báo",
+
+   "common.page_title.register": "Trang đăng ký",
+   "common.page_title.signin": "Trang đăng nhập",
+
+   "common.profile": "Hồ sơ",
+   "common.register": "Đăng ký",
+   "common.setting": "Cài đặt",
+   "common.signin": "Đăng nhập",
+
+   "menu.dashboard": "Bảng điều khiển",
+   "menu.settings": "Cài đặt",
+   "menu.users": "Người dùng"
+}

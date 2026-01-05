@@ -1,6 +1,7 @@
 import { FrownOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router';
+import { ROUTE_PATH } from '@constants';
 
 /**
  *
@@ -27,7 +28,7 @@ const ServerError = () => {
          <p className="mb-6 text-base text-gray-500">Sorry, something went wrong on our end. Please try again later.</p>
 
          {/* Go home button */}
-         <Button type="primary" onClick={() => navigate('/')}>
+         <Button type="primary" onClick={() => navigate(ROUTE_PATH.HOME)}>
             Go to Homepage
          </Button>
       </div>
