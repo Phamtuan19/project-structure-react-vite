@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useNavigate, useRoutes, useLocation, matchRoutes, type RouteObject } from 'react-router';
 import { SETTINGS_CONFIG } from '../config';
 import { flattenRoutes, ROUTES } from '../routes';

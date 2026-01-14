@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/check-indentation */
 /* eslint-disable tsdoc/syntax */
 import { useEffect, useRef, useState } from 'react';
 

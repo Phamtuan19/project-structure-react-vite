@@ -63,6 +63,6 @@
       "verbatimModuleSyntax": true
    },
    "exclude": ["node_modules", "vite.config.ts"],
-   "include": ["**/*.ts", "**/*.tsx"],
+   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "reset.d.ts"],
    "references": [{ "path": "./tsconfig.node.json" }]
 }

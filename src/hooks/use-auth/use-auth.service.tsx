@@ -3,7 +3,7 @@ import { openNotification } from '@components';
 import { API_END_POINT, ROUTE_PATH } from '@constants';
 import type { UserAuthInfo } from '@types';
 import { eraseCookie, setCookie } from '@utils';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 export interface RequestDataSignin {
    identifier: string;

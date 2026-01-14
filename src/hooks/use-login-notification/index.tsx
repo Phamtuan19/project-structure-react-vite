@@ -1,7 +1,5 @@
-// hooks/useLoginNotification.ts
 import { useEffect } from 'react';
 import { openNotification } from '@components';
-import type { UserAuthInfo } from '@types';
 import { LOGIN_NOTIFICATION_KEY } from '@app/constants';
 import { useAuth } from '@hooks/use-auth';
 

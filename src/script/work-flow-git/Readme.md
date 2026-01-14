@@ -19,9 +19,11 @@ Script này giúp bạn tự động hóa quy trình commit và push code lên G
    chmod +x git_commit_and_push.sh
    ```
 3. **Chạy script với cú pháp:**
+
    ```sh
    ./git_commit_and_push.sh <your-branch-name> "Your commit message over here"
    ```
+
    - `<your-branch-name>`: Tên nhánh bạn muốn push code lên (ví dụ: `main`, `develop`, ...)
    - `"Your commit message over here"`: Nội dung commit (bắt buộc đặt trong dấu nháy kép nếu có khoảng trắng)
 

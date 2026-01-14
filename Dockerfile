@@ -1,23 +1,34 @@
-# Sử dụng node base image để tạo môi trường cho React
-FROM node:18-alpine
+# Multi-stage build để tối ưu kích thước image
+
+# Stage 1: Build stage
+FROM node:18-alpine AS builder
 
 # Đặt thư mục làm việc trong container
 WORKDIR /app
 
-# Copy package.json và yarn.lock (hoặc package-lock.json) vào container
+# Copy package files
 COPY package.json package-lock.json ./
 
 # Cài đặt các phụ thuộc
-RUN npm install --force
+RUN npm ci --only=production=false
 
-# Copy toàn bộ mã nguồn của dự án vào container
+# Copy source code
 COPY . .
 
 # Build ứng dụng React
 RUN npm run build
 
-# Mở cổng 8088 để ứng dụng có thể được truy cập từ bên ngoài
-EXPOSE 8088
+# Stage 2: Production stage với nginx
+FROM nginx:alpine
 
-# Chạy ứng dụng React
-CMD ["npm", "run", "dev"]
+# Copy build files từ builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx config tùy chỉnh (nếu có)
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Mở cổng 80 (default nginx port)
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -5,10 +5,6 @@ export const ROUTE_PATH = {
 
    HOME: '/',
 
-   // ===== CMS ADMIN ROUTES ===== //
-   CMS_DASHBOARD: 'cms/dashboard',
-   CMS_SETTING: 'cms/settings',
-
    // ===== AUTH ROUTES ===== //
 
    SIGN_IN: '/auth/signin',

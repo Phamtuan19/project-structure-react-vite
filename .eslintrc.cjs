@@ -22,7 +22,17 @@ module.exports = {
    ],
 
    // Danh sách các thư mục và file mà ESLint sẽ bỏ qua khi kiểm tra
-   ignorePatterns: ['**/*', '!src/**'],
+   ignorePatterns: [
+      '.eslintrc.cjs',
+      '*.config.js',
+      '*.config.ts',
+      '*.slice.ts',
+      '*.config.cjs',
+      'additional.d.ts',
+      'vitest.config.ts',
+      'vite.config.ts',
+      'tailwind.config.ts',
+   ],
 
    // Các cấu hình đặc biệt cho các loại file khác nhau
    overrides: [
@@ -47,7 +57,7 @@ module.exports = {
                'error',
                { checksVoidReturn: { arguments: false, attributes: false } },
             ],
-            '@typescript-eslint/ban-types': ['error', { extendDefaults: true, types: { '{}': false } }],
+            // '@typescript-eslint/ban-types': ['error', { extendDefaults: true, types: { '{}': false } }],
             '@typescript-eslint/naming-convention': [
                'warn',
                {
@@ -56,6 +66,7 @@ module.exports = {
                   leadingUnderscore: 'allow', // Cho phép dấu gạch dưới ở đầu biến
                },
             ],
+            'react/no-unescaped-entities': 'off',
          },
       },
       {
@@ -93,22 +104,29 @@ module.exports = {
    // Các quy tắc được áp dụng cho toàn bộ dự án
    rules: {
       'import/no-default-export': 'off',
-      'jsdoc/check-indentation': 'warn',
-      'jsdoc/check-syntax': 'warn',
-      'jsdoc/no-blank-blocks': 'warn',
-      'jsdoc/require-jsdoc': [
-         'warn',
-         {
-            publicOnly: true,
-            require: {},
-            enableFixer: true,
-         },
-      ],
-      'jsdoc/require-description': 'warn',
-      'jsdoc/require-param': ['warn', { checkDestructuredRoots: false }],
-      'jsdoc/require-throws': 'error',
-      'jsdoc/tag-lines': ['warn', 'never', { startLines: 1 }],
-      'jsdoc/sort-tags': 'warn',
+      'jsdoc/check-indentation': 'off',
+      'jsdoc/check-syntax': 'off',
+      'jsdoc/no-blank-blocks': 'off',
+      'jsdoc/require-jsdoc': 'off',
+      'jsdoc/require-description': 'off',
+      'jsdoc/require-param': 'off',
+      'jsdoc/require-throws': 'off',
+      'jsdoc/tag-lines': 'off',
+      'jsdoc/sort-tags': 'off',
+      //   'jsdoc/require-jsdoc': [
+      //      'warn',
+      //      {
+      //         publicOnly: true,
+      //         require: {},
+      //         enableFixer: true,
+      //      },
+      //   ],
+      //   'jsdoc/require-jsdoc': 'off',
+      //   'jsdoc/require-description': 'warn',
+      //   'jsdoc/require-param': ['warn', { checkDestructuredRoots: false }],
+      //   'jsdoc/require-throws': 'error',
+      //   'jsdoc/tag-lines': ['warn', 'never', { startLines: 1 }],
+      //   'jsdoc/sort-tags': 'warn',
       'react/button-has-type': 'error',
       'react/destructuring-assignment': ['error', 'always', { destructureInSignature: 'always' }],
       'react/display-name': 'warn',

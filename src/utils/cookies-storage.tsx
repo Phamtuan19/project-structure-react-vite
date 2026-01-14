@@ -1,4 +1,3 @@
-// cookie.ts
 export function setCookie(
    name: string,
    value: string,

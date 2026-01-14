@@ -1,31 +1,20 @@
+import { isEqual } from '@utils';
 import { useEffect, useRef } from 'react';
 
-function isEqual(a: any, b: any): boolean {
-   if (a === b) return true;
-   if (typeof a !== typeof b) return false;
+export function useDeepCompareEffect<T extends readonly unknown[]>(effect: React.EffectCallback, deps: T): void {
+   const effectRef = useRef<React.EffectCallback>(effect);
+   const depsRef = useRef<T | null>(null);
 
-   if (Array.isArray(a) && Array.isArray(b)) {
-      if (a.length !== b.length) return false;
-      return a.every((item, index) => isEqual(item, b[index]));
-   }
+   // luôn giữ effect mới nhất
+   useEffect(() => {
+      effectRef.current = effect;
+   }, [effect]);
 
-   if (typeof a === 'object' && a && b) {
-      const aKeys = Object.keys(a);
-      const bKeys = Object.keys(b);
-      if (aKeys.length !== bKeys.length) return false;
-      return aKeys.every((key) => isEqual(a[key], b[key]));
-   }
-
-   return false;
-}
-
-// Custom hook
-export function useDeepCompareEffect(effect: React.EffectCallback, deps: any[]) {
-   const ref = useRef<any[]>([]);
-
-   if (!isEqual(deps, ref.current)) {
-      ref.current = deps;
-   }
-
-   useEffect(effect, [ref.current]);
+   useEffect(() => {
+      if (!depsRef.current || !isEqual(depsRef.current, deps)) {
+         depsRef.current = deps;
+         return effectRef.current();
+      }
+      return;
+   }, [deps]);
 }
