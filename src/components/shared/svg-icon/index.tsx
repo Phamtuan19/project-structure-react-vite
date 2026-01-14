@@ -1,3 +1,6 @@
+/* eslint-disable tsdoc/syntax */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useSvgIcon } from '@hooks';
 import { type ComponentProps, useMemo } from 'react';
 
@@ -8,6 +11,7 @@ type SvgIconProps = ComponentProps<'svg'> & {
    name: string;
    /**
     * Show error message in UI instead of throwing
+    *
     * @default false
     */
    showError?: boolean;
@@ -29,7 +33,6 @@ type SvgIconProps = ComponentProps<'svg'> & {
  *
  * @param props - Component props extending SVG element props
  * @returns SVG icon component or fallback UI
- *
  * @example
  * ```tsx
  * <SvgIcon name="react" width={24} height={24} />

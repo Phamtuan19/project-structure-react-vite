@@ -1,9 +1,7 @@
-# ⚙️ project-structure
+# 🚀 Project Structure - React Boilerplate
 
-> Cấu trúc dự án React 19 + Vite + TypeScript chuẩn production-ready.  
-> Tích hợp sẵn: TailwindCSS, Ant Design 5, Redux Toolkit, React Query, i18next, SSR với Express, kiểm tra chất lượng mã, và hỗ trợ staging/production mode.
-
----
+> Cấu trúc dự án React 19 + Vite + TypeScript chuẩn production-ready.
+> Tích hợp sẵn: TailwindCSS, Ant Design 5, Zustand, TanStack Query, i18next, Sentry, kiểm tra chất lượng mã, và hỗ trợ staging/production mode.
 
 ## 📝 Giới thiệu
 
@@ -16,12 +14,13 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [TailwindCSS 4](https://tailwindcss.com/)
 - [Ant Design 5](https://ant.design/)
-- [Redux Toolkit](https://redux-toolkit.js.org/)
-- [React Query](https://react-query.tanstack.com/)
-- [React Hook Form](https://react-hook-form.com/)
+- [Zustand](https://zustand-demo.pmnd.rs/) - State Management
+- [TanStack Query](https://tanstack.com/query/)
+- [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - [i18next](https://www.i18next.com/) + [react-i18next](https://react.i18next.com/)
-- [Express](https://expressjs.com/) (SSR hỗ trợ Vite)
+- [Sentry](https://sentry.io/) - Error Monitoring
 - ESLint + Prettier + Husky + Lint-staged
+- [Vitest](https://vitest.dev/) - Testing Framework
 
 ---
 
@@ -41,80 +40,110 @@
 
 ## 🛠️ Các lệnh phát triển
 
-- `npm run dev` — Chạy server phát triển (hot reload)
-- `npm run build` — Build production
-- `npm run preview` — Xem thử bản build
-- `npm run lint` — Kiểm tra chất lượng mã với ESLint
-- `npm run format:fix` — Tự động format code với Prettier
-- `npm run type:check` — Kiểm tra type với TypeScript
+### Development
+
+- `npm run dev` — Chạy development server (hot reload)
+- `npm run staging` — Chạy server với mode staging
+- `npm run production` — Chạy server với mode production
+
+### Build
+
+- `npm run build` — Build cho production
+- `npm run build-staging` — Build cho staging
+- `npm run build-production` — Build cho production
+- `npm run preview` — Preview production build
+
+### Code Quality
+
+- `npm run lint` — Kiểm tra code với ESLint
+- `npm run lint:fix` — Tự động fix ESLint issues
+- `npm run format:check` — Kiểm tra format với Prettier
+- `npm run format:fix` — Tự động format code
+- `npm run type:check` — Kiểm tra TypeScript types
+- `npm run validate` — Chạy lint + type check
+
+### Testing
+
+- `npm run test` — Chạy tests
+- `npm run test:run` — Chạy tests (headless)
+- `npm run test:ui` — Chạy tests với UI
+- `npm run test:coverage` — Chạy tests với coverage report
+
+### Utilities
+
+- `npm run setup` — Setup project (git init + husky)
 
 ## 📁 Cấu trúc dự án
 
 ```text
 src/
-  ├── app/           # Cấu hình, provider, context, config, permission, routes cho app
-  ├── assets/        # Tài nguyên tĩnh: images, icons, svg, ...
-  ├── components/    # Component dùng chung (shared, ui, controller-form)
-  ├── constants/     # Các hằng số dùng toàn dự án
-  ├── helpers/       # Hàm hỗ trợ, helper function
-  ├── hooks/         # Custom React hooks (use-auth, use-svg-icon, ...)
-  ├── language/      # Đa ngôn ngữ, resources, global
-  ├── layouts/       # Layout tổng thể (main-layout, ...)
-  ├── pages/         # Các trang (home, auth, menu, errors, ...)
-  ├── redux/         # Redux store, slice, rootReducer
-  ├── routes/        # Định nghĩa route, private-route, auth-route
-  ├── script/        # Script tự động hóa (work-flow-git, detect-package, ...)
-  ├── services/      # (nếu có) Giao tiếp API, service layer
-  ├── styles/        # File style global, tailwind, ...
-  ├── types/         # Định nghĩa type, interface dùng chung
-  ├── utils/         # Hàm tiện ích dùng chung
-  ├── main.tsx       # Entry point FE
-  ├── i18n.d.ts      # Định nghĩa type cho i18n
-  ├── env.d.ts       # Định nghĩa type cho biến môi trường
-public/              # File tĩnh public cho Vite
-.vscode/             # Cấu hình VSCode workspace
-.husky/              # Hook git (husky)
-node_modules/        # Thư viện cài đặt qua npm/yarn
-package.json         # Thông tin, script, dependency dự án
-vite.config.ts       # Cấu hình Vite
-tsconfig.json        # Cấu hình TypeScript
-.eslintrc.cjs        # Cấu hình ESLint
-.prettierrc          # Cấu hình Prettier
-.gitignore           # File git ignore
-Dockerfile           # Docker build config (nếu có)
+  ├── app/           # Cấu hình, provider, context, permission, routes
+  │   ├── config/    # API, i18n, theme, dayjs configs
+  │   ├── context/   # React contexts
+  │   ├── providers/ # App providers (notification, etc.)
+  │   ├── routes/    # Route configuration và loadable
+  │   └── utils/     # App utilities (session storage, permissions)
+  ├── assets/        # Static assets (icons, images)
+  ├── components/    # Reusable components
+  │   ├── builder/   # Page builder components
+  │   ├── controller-form/ # Form controllers (input, select, etc.)
+  │   ├── shared/    # Shared components (error boundary, loading, etc.)
+  │   └── ui/        # UI components
+  ├── constants/     # Application constants
+  ├── helpers/       # Helper functions
+  ├── hooks/         # Custom React hooks
+  ├── language/      # i18n resources và configuration
+  ├── layouts/       # Layout components
+  ├── pages/         # Page components
+  │   ├── auth/      # Authentication pages
+  │   ├── cms/       # CMS pages
+  │   └── errors/    # Error pages
+  ├── store/         # Zustand stores
+  ├── routes/        # Route definitions
+  ├── styles/        # Global styles
+  ├── test/          # Test setup
+  ├── types/         # TypeScript type definitions
+  ├── utils/         # Utility functions
+  └── main.tsx       # Application entry point
+public/              # Public static files
+node_modules/        # Dependencies
+package.json         # Package configuration
+vite.config.ts       # Vite configuration
+tsconfig.json        # TypeScript configuration
+.eslintrc.cjs        # ESLint configuration
+Dockerfile           # Docker configuration
 ```
 
 ### Giải thích các thư mục chính
 
-- **app/**: Tập trung các cấu hình, provider, context, permission, routes cho toàn bộ ứng dụng. Đây là nơi khởi tạo các context, cấu hình global, và các provider quan trọng.
-- **assets/**: Chứa tài nguyên tĩnh như hình ảnh, icon, SVG, ... dùng trong toàn dự án.
-- **components/**: Các component tái sử dụng, chia nhỏ theo loại (shared, ui, controller-form) để dễ quản lý và mở rộng.
-- **constants/**: Định nghĩa các hằng số dùng chung trong dự án (ví dụ: giá trị enum, key, ...).
-- **helpers/**: Các hàm hỗ trợ, xử lý logic nhỏ lẻ, tách biệt khỏi business logic chính.
-- **hooks/**: Custom React hooks, giúp tái sử dụng logic giữa các component (ví dụ: use-auth, use-svg-icon, ...).
-- **language/**: Quản lý đa ngôn ngữ, resources, file global cho i18n.
-- **layouts/**: Các layout tổng thể cho ứng dụng (main-layout, ...), giúp tổ chức giao diện nhất quán.
-- **pages/**: Mỗi thư mục là một trang (route) lớn, có thể chứa các sub-page hoặc logic riêng cho từng trang.
-- **redux/**: Quản lý state toàn cục với Redux Toolkit, bao gồm store, slice, rootReducer.
-- **routes/**: Định nghĩa các loại route (private, auth, ...), giúp kiểm soát quyền truy cập và điều hướng.
-- **script/**: Các script tự động hóa quy trình phát triển (ví dụ: git workflow, detect-package, ...).
-- **services/**: (Nếu có) Chứa các hàm giao tiếp API, service layer, tách biệt logic gọi API khỏi component.
-- **styles/**: File CSS, cấu hình Tailwind, các style global cho toàn dự án.
-- **types/**: Định nghĩa type, interface dùng chung toàn dự án, giúp tăng tính type-safe khi phát triển.
-- **utils/**: Các hàm tiện ích dùng chung, thường là các function nhỏ, không phụ thuộc vào business logic.
-- **main.tsx**: Điểm khởi đầu của ứng dụng FE (frontend entry point).
-- **i18n.d.ts, env.d.ts**: Định nghĩa type cho i18n và biến môi trường.
-- **public/**: Chứa các file tĩnh public cho Vite (favicon, robots.txt, ...).
-- **.vscode/**: Cấu hình workspace cho VSCode (settings, extensions đề xuất, ...).
-- **.husky/**: Chứa các hook git (pre-commit, pre-push, ...).
-- **package.json**: Thông tin dự án, script, dependency.
-- **vite.config.ts**: Cấu hình Vite cho dự án.
-- **tsconfig.json**: Cấu hình TypeScript.
-- **.eslintrc.cjs**: Cấu hình ESLint.
-- **.prettierrc**: Cấu hình Prettier.
-- **.gitignore**: File cấu hình các file/thư mục bị git bỏ qua.
-- **Dockerfile**: Cấu hình build Docker (nếu có).
+- **app/**: Chứa các cấu hình core của ứng dụng (API, i18n, theme), providers, context, permission system và route configuration.
+- **assets/**: Tài nguyên tĩnh như icons, images được sử dụng trong toàn bộ ứng dụng.
+- **components/**: Components tái sử dụng, được chia thành các nhóm: shared (chung), ui (giao diện), controller-form (form controls), và builder (page builder).
+- **constants/**: Hằng số và cấu hình dùng chung trong toàn dự án.
+- **helpers/**: Các hàm helper hỗ trợ xử lý logic nhỏ lẻ.
+- **hooks/**: Custom React hooks để tái sử dụng logic giữa các components.
+- **language/**: Quản lý đa ngôn ngữ với i18next, chứa resources và cấu hình.
+- **layouts/**: Layout components cho các trang khác nhau (CMS layout, main layout).
+- **pages/**: Page components được tổ chức theo tính năng (auth, cms, errors, home).
+- **store/**: Zustand stores cho state management toàn cục.
+- **routes/**: Định nghĩa các route types (auth routes, private routes, CMS routes).
+- **styles/**: Styles global, Tailwind configuration.
+- **types/**: TypeScript type definitions và interfaces.
+- **utils/**: Utility functions dùng chung.
+- **main.tsx**: Entry point của React application.
 
----
+## 🔧 Tính năng chính
 
-_Dự án này giúp bạn tiết kiệm thời gian setup, tập trung phát triển tính năng!_
+- **🔐 Authentication**: JWT-based auth với refresh token
+- **👥 Role-based Access Control**: Permission system với roles
+- **🌐 Internationalization**: Đa ngôn ngữ (EN/VI)
+- **🎨 Modern UI**: Ant Design 5 + TailwindCSS
+- **📱 Responsive**: Mobile-first design
+- **⚡ Performance**: Code splitting, lazy loading, optimized builds
+- **🐛 Error Handling**: Error boundaries với Sentry integration
+- **🧪 Testing**: Vitest + React Testing Library
+- **🚀 Production Ready**: Docker support, CI/CD ready
+
+## 📄 License
+
+This project is private and proprietary.

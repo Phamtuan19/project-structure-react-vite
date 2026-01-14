@@ -10,3 +10,5 @@
 export * from './cn';
 
 export * from './cookies-storage';
+
+export * from './isEqual';

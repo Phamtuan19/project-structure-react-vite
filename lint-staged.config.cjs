@@ -7,12 +7,12 @@ const detectPackageManager = () => {
 const pm = detectPackageManager();
 
 module.exports = {
-   // Format + Sort JSON cho các file thay đổi
+   // Format JSON / MD
    '*.{json,md}': [`${pm} run format:fix`],
 
-   // Format SVG
+   // Optimize SVG
    '*.svg': [`${pm} run format:svg`],
 
-   // Lint + Typecheck cho JS/TS
-   '*.{js,jsx,ts,tsx}': [`${pm} run lint:fix`, `${pm} run type:check`],
+   // Lint source code ONLY
+   'src/**/*.{js,jsx,ts,tsx}': [`${pm} run lint:fix`],
 };

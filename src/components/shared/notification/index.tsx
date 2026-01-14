@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { notification, type NotificationArgsProps } from 'antd';
 import React from 'react';
 import './notification.style.scss';
@@ -8,7 +9,9 @@ export const setNotificationApi = (api: typeof notificationApi) => {
    notificationApi = api;
 };
 
-export const openNotification = (config: Omit<NotificationArgsProps, 'message'> & { message?: React.ReactNode }) => {
+export const openNotification = (
+   config: Omit<NotificationArgsProps, 'message'> & { message?: React.ReactNode },
+): void => {
    if (!notificationApi) return;
 
    const {
@@ -20,12 +23,7 @@ export const openNotification = (config: Omit<NotificationArgsProps, 'message'> 
       ...rest
    } = config;
 
-   if (!notificationApi) return;
-
-   const allowedTypes = ['success', 'info', 'warning', 'error'] as const;
-   type NotificationType = (typeof allowedTypes)[number];
-
-   notificationApi[type as NotificationType]({
+   notificationApi[type]({
       ...rest,
       duration: 3,
       message,

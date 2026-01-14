@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/check-indentation */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { cn } from '@utils';
 import React, { useState } from 'react';

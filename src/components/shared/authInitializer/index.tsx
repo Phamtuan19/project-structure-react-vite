@@ -1,10 +1,9 @@
 import { SETTINGS_CONFIG } from '@app/config';
-import { useAuth } from '@hooks';
-import { useLoginNotification } from '@hooks';
+import { useAuth, useLoginNotification } from '@hooks';
 import { getCookie } from '@utils';
 import React, { useEffect, useRef } from 'react';
 
-const AuthInitializer = (props: { children?: React.ReactNode }) => {
+const AuthInitializer = ({ children }: { children?: React.ReactNode }) => {
    const hasFetchedUser = useRef(false);
    const { authGetUser, authLogout, isInitialized } = useAuth();
 
@@ -23,7 +22,7 @@ const AuthInitializer = (props: { children?: React.ReactNode }) => {
       hasFetchedUser.current = true;
    }, [authGetUser, authLogout, isInitialized]);
 
-   return <>{props.children}</>;
+   return <>{children}</>;
 };
 
 export default AuthInitializer;

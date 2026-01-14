@@ -1,4 +1,3 @@
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import type { AuthStore } from './auth-store.type';
@@ -32,8 +31,6 @@ const createAuthStore = immer<AuthStore>((set) => ({
          state.isLoading = loading;
       }),
 }));
-
-const isDev = import.meta.env.MODE === 'development';
 
 const useAuthStore = create(createAuthStore);
 

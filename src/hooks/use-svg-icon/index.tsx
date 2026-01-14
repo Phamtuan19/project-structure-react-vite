@@ -21,7 +21,7 @@ Object.entries(iconModules).forEach(([path, importFn]) => {
    //   'src/assets/icons/react.svg' -> 'react'
    //   '/src/assets/icons/folder/icon.svg' -> 'folder/icon'
    // Use single regex to handle both cases with/without leading slash
-   const match = path.match(/[\/]?icons\/(.+?)\.svg$/);
+   const match = path.match(/\/?icons\/(.+?)\.svg$/);
    if (match && match[1]) {
       const iconName = match[1].toLowerCase();
       iconMap.set(iconName, importFn as () => Promise<{ ReactComponent: ElementType }>);
@@ -54,7 +54,6 @@ const isValidIconName = (name: string): boolean => {
  *
  * @param name - Icon name without extension (e.g., 'react' for 'react.svg')
  * @returns Object containing error, loading state, and Icon component
- *
  * @example
  * ```tsx
  * const { Icon, loading, error } = useSvgIcon('react');

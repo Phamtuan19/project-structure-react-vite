@@ -7,7 +7,7 @@ import { SESSION_STORAGE_KEYS } from '@app/utils';
 export const useAuth = () => {
    const auth = useAuthStore((state: AuthStore) => state);
 
-   const { mutate: mutateSignin, isLoading: isLoadingSignin } = usePostSignin();
+   const { mutate: mutateSignin, isPending: isLoadingSignin } = usePostSignin();
    const { mutate: mutateGetMe } = usePostGetMe();
 
    const autSignin = (payload: RequestDataSignin) => {
