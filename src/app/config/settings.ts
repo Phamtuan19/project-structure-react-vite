@@ -66,10 +66,9 @@ export const SETTINGS_CONFIG: ConfigProps = {
     * Example: https://api.example.com/v1
     */
    API_URL: (() => {
-      const apiUrl = import.meta.env.VITE_APP_API_URL as string;
+      const apiUrl = import.meta.env.VITE_API_URL;
       if (!apiUrl) {
-         console.error('VITE_APP_API_URL is not defined in environment variables');
-         return '';
+         throw new Error('Missing env: VITE_API_URL');
       }
       return apiUrl;
    })(),
