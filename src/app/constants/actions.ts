@@ -10,7 +10,7 @@ import { z } from 'zod';
  * Các giá trị được dùng kết hợp với RouteConfig.allowedActions.
  */
 export const ACTION = {
-   READ:   'read',
+   READ: 'read',
    CREATE: 'create',
    UPDATE: 'update',
    DELETE: 'delete',
