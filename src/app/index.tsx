@@ -1,12 +1,13 @@
+import '@/app/config/dayjs.config';
+import '@app/config/i18n';
 import { BrowserRouter } from 'react-router';
 import { Permission } from './permission';
 import { focusManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import '@app/config/i18n';
 import NotificationProvider from './providers/notification-provider';
 import { ConfigProvider } from 'antd';
 import { themeAntdConfig } from './config';
-import AuthInitializer from '@components/shared/authInitializer';
+import { RouterProvider } from './routes';
 import ErrorBoundary from '@components/shared/error-boundary';
 
 const queryClient = new QueryClient();
@@ -17,14 +18,14 @@ const App = () => {
    return (
       <ErrorBoundary>
          <QueryClientProvider client={queryClient}>
-            <AuthInitializer>
-               <BrowserRouter>
-                  <ConfigProvider theme={themeAntdConfig}>
+            <BrowserRouter>
+               <ConfigProvider theme={themeAntdConfig}>
+                  <RouterProvider>
                      <Permission />
                      <NotificationProvider />
-                  </ConfigProvider>
-               </BrowserRouter>
-            </AuthInitializer>
+                  </RouterProvider>
+               </ConfigProvider>
+            </BrowserRouter>
          </QueryClientProvider>
       </ErrorBoundary>
    );

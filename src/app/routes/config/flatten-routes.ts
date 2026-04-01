@@ -1,20 +1,25 @@
+/* eslint-disable tsdoc/syntax */
 import type { RouteProps } from '../route.type';
 
 /**
- * Flattens the nested route tree into a flat array of route objects.
+ * Flattens the nested route tree into a flat array.
  *
- * @param routes - The array of route objects to flatten.
- * @returns The flattened array of route objects.
+ * Chỉ giữ leaf routes — những route thực sự được render và người dùng có thể
+ * truy cập. Parent layout (không có `element`/`index`, chỉ dùng để bao children)
+ * bị loại bỏ vì nó không phải là route có thể navigate.
+ *
  * @example
- * flattenRoutes[ROUTES]
+ * // Input:
+ * { path: '/', children: [           ← parent layout → BỎ
+ *   { path: '/home', element: <X/> }  ← leaf route → GIỮ
+ * ]}
+ * // Output: [{ path: '/home', element: <X/> }]
  */
 export const flattenRoutes = (routes: RouteProps[]): RouteProps[] =>
    routes.flatMap((route) => {
-      if (route.children) {
-         const childRoutes = flattenRoutes(route.children);
-
-         return [...childRoutes];
-      } else {
-         return route;
+      const { children } = route;
+      if (children) {
+         return flattenRoutes(children);
       }
+      return [route];
    });

@@ -77,59 +77,96 @@
 
 ```text
 src/
-  ├── app/           # Cấu hình, provider, context, permission, routes
-  │   ├── config/    # API, i18n, theme, dayjs configs
-  │   ├── context/   # React contexts
-  │   ├── providers/ # App providers (notification, etc.)
-  │   ├── routes/    # Route configuration và loadable
-  │   └── utils/     # App utilities (session storage, permissions)
-  ├── assets/        # Static assets (icons, images)
-  ├── components/    # Reusable components
-  │   ├── builder/   # Page builder components
-  │   ├── controller-form/ # Form controllers (input, select, etc.)
-  │   ├── shared/    # Shared components (error boundary, loading, etc.)
-  │   └── ui/        # UI components
-  ├── constants/     # Application constants
-  ├── helpers/       # Helper functions
-  ├── hooks/         # Custom React hooks
-  ├── language/      # i18n resources và configuration
-  ├── layouts/       # Layout components
-  ├── pages/         # Page components
-  │   ├── auth/      # Authentication pages
-  │   ├── cms/       # CMS pages
-  │   └── errors/    # Error pages
-  ├── store/         # Zustand stores
-  ├── routes/        # Route definitions
-  ├── styles/        # Global styles
-  ├── test/          # Test setup
-  ├── types/         # TypeScript type definitions
-  ├── utils/         # Utility functions
-  └── main.tsx       # Application entry point
-public/              # Public static files
-node_modules/        # Dependencies
-package.json         # Package configuration
-vite.config.ts       # Vite configuration
-tsconfig.json        # TypeScript configuration
-.eslintrc.cjs        # ESLint configuration
-Dockerfile           # Docker configuration
+  ├── app/                    # Core application logic
+  │   ├── config/            # Application configurations
+  │   │   ├── api/           # API configurations (axios, endpoints)
+  │   │   ├── dayjs.config.ts # Date/time configuration
+  │   │   ├── i18n/          # Internationalization setup
+  │   │   ├── settings.ts    # App settings
+  │   │   └── theme-antd/    # Ant Design theme configuration
+  │   ├── constants/         # App-level constants
+  │   ├── context/           # React contexts (notification, etc.)
+  │   ├── permission/        # Permission management system
+  │   ├── providers/         # App providers (notification, etc.)
+  │   ├── routes/            # Route configuration and loadable components
+  │   │   ├── config/        # Route configuration utilities
+  │   │   └── router-provider.tsx # Router provider
+  │   ├── index.tsx          # App component
+  │   └── utils/             # App utilities (permissions, session storage)
+  ├── assets/                # Static assets (icons, images, SVGs)
+  ├── components/            # Reusable components
+  │   ├── builder/           # Page builder components
+  │   │   └── sections/      # Builder sections
+  │   ├── controller-form/   # Form controllers (input, select, checkbox, etc.)
+  │   ├── shared/            # Shared components (loading, error boundary, etc.)
+  │   └── ui/                # UI components (navigation, etc.)
+  ├── constants/             # Global constants (API endpoints, routes, menu)
+  ├── helpers/               # Helper functions
+  ├── hooks/                 # Custom React hooks (auth, debounced, etc.)
+  ├── language/              # i18n resources and configuration
+  │   ├── en.json            # English translations
+  │   ├── vi.json            # Vietnamese translations
+  │   └── resources.ts       # Language resources configuration
+  ├── layouts/               # Layout components
+  │   └── main-layout/       # Main application layout
+  ├── pages/                 # Page components
+  │   ├── auth/              # Authentication pages
+  │   │   ├── register/      # User registration
+  │   │   └── signin/        # User sign-in
+  │   ├── errors/            # Error pages (403, 404, 500)
+  │   ├── home/              # Home page
+  │   └── not-found/         # 404 not found page
+  ├── routes/                # Route definitions and guards
+  │   ├── auth-route.tsx     # Authentication route guard
+  │   ├── private-route.tsx  # Private route guard
+  │   └── index.tsx          # Route configuration
+  ├── script/                # Utility scripts
+  │   ├── detect-package/    # Package manager detection
+  │   └── work-flow-git/     # Git workflow scripts
+  ├── store/                 # Zustand stores for state management
+  │   └── auth-store/        # Authentication state management
+  ├── styles/                # Global styles and CSS
+  ├── test/                  # Test setup and utilities
+  ├── types/                 # TypeScript type definitions
+  ├── utils/                 # Utility functions (cn, cookies, etc.)
+  ├── env.d.ts               # Environment type definitions
+  ├── i18n.d.ts              # i18next type definitions
+  └── main.tsx               # Application entry point
+public/                      # Public static files (favicon, etc.)
+dist/                        # Build output directory
+node_modules/                # Dependencies
+additional.d.ts              # Additional type definitions
+reset.d.ts                   # CSS reset types
+commitlint.config.cjs        # Commit linting configuration
+lint-staged.config.cjs       # Lint-staged configuration
+svgo.config.cjs              # SVGO configuration for icon optimization
+package.json                 # Package configuration
+vite.config.ts               # Vite build tool configuration
+vitest.config.ts             # Vitest testing framework configuration
+tsconfig.json                # TypeScript configuration
+tsconfig.node.json           # TypeScript config for Node.js files
+Dockerfile                   # Docker container configuration
+yarn.lock                    # Yarn lockfile
 ```
 
 ### Giải thích các thư mục chính
 
-- **app/**: Chứa các cấu hình core của ứng dụng (API, i18n, theme), providers, context, permission system và route configuration.
-- **assets/**: Tài nguyên tĩnh như icons, images được sử dụng trong toàn bộ ứng dụng.
-- **components/**: Components tái sử dụng, được chia thành các nhóm: shared (chung), ui (giao diện), controller-form (form controls), và builder (page builder).
-- **constants/**: Hằng số và cấu hình dùng chung trong toàn dự án.
+- **app/**: Chứa logic cốt lõi của ứng dụng bao gồm cấu hình (API, i18n, theme), providers, context, hệ thống phân quyền và cấu hình routes.
+- **assets/**: Tài nguyên tĩnh như icons, images, SVGs được sử dụng trong toàn bộ ứng dụng.
+- **components/**: Components tái sử dụng, được tổ chức thành: shared (chung), ui (giao diện), controller-form (form controls), và builder (page builder).
+- **constants/**: Hằng số và cấu hình dùng chung trong toàn dự án (API endpoints, routes, menu items).
 - **helpers/**: Các hàm helper hỗ trợ xử lý logic nhỏ lẻ.
-- **hooks/**: Custom React hooks để tái sử dụng logic giữa các components.
-- **language/**: Quản lý đa ngôn ngữ với i18next, chứa resources và cấu hình.
-- **layouts/**: Layout components cho các trang khác nhau (CMS layout, main layout).
-- **pages/**: Page components được tổ chức theo tính năng (auth, cms, errors, home).
-- **store/**: Zustand stores cho state management toàn cục.
-- **routes/**: Định nghĩa các route types (auth routes, private routes, CMS routes).
-- **styles/**: Styles global, Tailwind configuration.
-- **types/**: TypeScript type definitions và interfaces.
-- **utils/**: Utility functions dùng chung.
+- **hooks/**: Custom React hooks để tái sử dụng logic giữa các components (auth, debounced, click outside, etc.).
+- **language/**: Quản lý đa ngôn ngữ với i18next, chứa resources (EN/VI) và cấu hình.
+- **layouts/**: Layout components cho các trang khác nhau (main layout).
+- **pages/**: Page components được tổ chức theo tính năng (auth, errors, home, not-found).
+- **routes/**: Định nghĩa các route types và route guards (auth routes, private routes).
+- **script/**: Scripts tiện ích cho phát triển (package manager detection, git workflow).
+- **store/**: Zustand stores cho state management toàn cục (authentication store).
+- **styles/**: Styles global và cấu hình TailwindCSS.
+- **test/**: Cấu hình và setup cho testing framework.
+- **types/**: TypeScript type definitions và interfaces cho toàn bộ ứng dụng.
+- **utils/**: Utility functions dùng chung (className utilities, cookie storage, etc.).
 - **main.tsx**: Entry point của React application.
 
 ## 🔧 Tính năng chính

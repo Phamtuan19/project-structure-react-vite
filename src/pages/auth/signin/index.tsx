@@ -29,7 +29,7 @@ const Login = () => {
             {/* Logo / Title */}
             <div className="mb-6 text-center">
                <Typography.Title level={2} className="text-3xl font-extrabold text-gray-800">
-                  {t('signin.title')}
+                  {t('auth.signin.title')}
                </Typography.Title>
                <Typography.Text className="text-gray-500">Welcome back! Please login to your account.</Typography.Text>
             </div>
