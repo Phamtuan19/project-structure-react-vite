@@ -1,76 +1,77 @@
 import { type Role, ROLE } from '@app/constants';
+import { type Action } from '@app/constants/actions';
 
+/**
+ * Props cho hàm checkUserPermission — tổng hợp 2 lớp phân quyền.
+ */
 type CheckUserPermissionProps = {
-   routePermissions: Role[] | undefined;
+   /** Cấp độ 1: Role config khai báo ở route. */
+   routePermissions?: Role[];
+   /** Cấp độ 2: Action config khai báo ở route. */
+   allowedActions?: Action[];
+   /** User đã đăng nhập hay chưa. */
    isAuthenticatedUser: boolean | undefined;
+   /** Danh sách role của user hiện tại. */
    userRoles: Role[];
 };
 
 /**
  * Kiểm tra xem người dùng có quyền truy cập route hay không.
  *
- * Logic phân quyền được thiết kế theo 4 tầng:
+ * Phân quyền 2 lớp (chạy tuần tự, trả về false ngay khi fail ở bất kỳ lớp nào):
  *
- * Tầng 1 — Không khai báo quyền (routePermissions = undefined | null)
- *   → Ai cũng được vào (không bảo vệ)
+ * ── Lớp 1: Role ──────────────────────────────────────────────────────────────
+ * Kiểm tra user có đúng role để vào route hay không.
  *
- * Tầng 2 — Mảng rỗng (routePermissions = [])
- *   → Chỉ người CHƯA đăng nhập được vào
- *   → Dùng cho: route đăng nhập, đăng ký, quên mật khẩu…
+ *   undefined          → ai cũng vào được (public)
+ *   []                 → chỉ người CHƯA đăng nhập (login/register page)
+ *   [ROLE.USER]        → mọi user đã đăng nhập
+ *   [ROLE.ADMIN]       → chỉ admin
+ *   [ROLE.ADMIN, ...]  → admin hoặc các role cụ thể
  *
- * Tầng 3 — ROLE.USER (yêu cầu đã đăng nhập)
- *   → Bất kỳ user đã authenticate nào đều được vào
- *   → Dùng cho: trang profile, đổi mật khẩu, dashboard cá nhân…
+ * ── Lớp 2: Action ─────────────────────────────────────────────────────────────
+ * Kiểm tra action (CRUD) được phép trên route.
+ * Chỉ có ý nghĩa khi Lớp 1 đã pass (user đã có quyền vào route).
  *
- * Tầng 4 — ROLE cụ thể (VD: [ROLE.ADMIN, ROLE.MANAGER])
- *   → Ưu tiên ADMIN: nếu user là ADMIN → cho vào ngay
- *   → Nếu không: kiểm tra xem user có role nào nằm trong danh sách cho phép
- *   → Dùng cho: trang quản trị, trang quản lý nhân sự…
+ *   undefined          → full access (tất cả action)
+ *   [ACTION.READ]      → chỉ được đọc, không create/update/delete
+ *
+ * @returns true = được phép truy cập đầy đủ, false = bị từ chối ở một lớp nào đó
  */
 export const checkUserPermission = ({
    routePermissions,
+   allowedActions,
    isAuthenticatedUser,
    userRoles,
 }: CheckUserPermissionProps): boolean => {
    /**
-    * Tầng 1: Route không khai báo quyền → cho phép tất cả mọi người (kể cả chưa login)
+    * ── Lớp 1: Role check ─────────────────────────────────────────────────────
     */
    if (!routePermissions) {
-      return true;
+      // Public route → không block.
+   } else if (routePermissions.length === 0) {
+      // Auth-only route (login/register) → chỉ cho phép người CHƯA đăng nhập.
+      if (isAuthenticatedUser) return false;
+   } else if (routePermissions.includes(ROLE.USER)) {
+      // Route yêu cầu đã login → kiểm tra isAuthenticated.
+      if (!isAuthenticatedUser) return false;
+   } else {
+      // Route yêu cầu role cụ thể → kiểm tra intersection.
+      if (!userRoles.includes(ROLE.ADMIN) && !userRoles.some((role) => routePermissions.includes(role))) {
+         return false;
+      }
    }
 
    /**
-    * Tầng 2: Route yêu cầu mảng rỗng []
-    * → Chỉ cho phép người CHƯA đăng nhập (isAuthenticatedUser = false)
-    * → Người đã login sẽ bị chặn (redirect đi chỗ khác)
+    * ── Lớp 2: Action check ───────────────────────────────────────────────────
     */
-   if (routePermissions.length === 0) {
-      return !isAuthenticatedUser;
+   if (!allowedActions) {
+      // Không khai báo action → full access.
+   } else if (!isAuthenticatedUser) {
+      // Guest: chỉ được action READ nếu có trong danh sách.
+      if (!allowedActions.includes('read')) return false;
    }
+   // Đã login: không giới hạn action ở route-level (giới hạn chi tiết ở component).
 
-   /**
-    * Tầng 3: Route yêu cầu ROLE.USER
-    * → Tất cả người đã đăng nhập đều được vào, bất kể role cụ thể
-    */
-   if (routePermissions.includes(ROLE.USER)) {
-      return !!isAuthenticatedUser;
-   }
-
-   /**
-    * Tầng 4: Route yêu cầu role cụ thể (ví dụ [ADMIN, MANAGER])
-    */
-
-   /**
-    * Ưu tiên kiểm tra ADMIN trước
-    * → Nếu user là ADMIN thì được vào mọi route cụ thể
-    */
-   if (userRoles.includes(ROLE.ADMIN)) {
-      return true;
-   }
-
-   /**
-    * Kiểm tra giao của userRoles và routePermissions
-    * → Trả về true nếu có ÍT NHẤT 1 role của user nằm trong danh sách quyền của route
-    */
-   return userRoles.some((role) => routePermissions.includes(role));
+   return true;
 };

@@ -1,4 +1,3 @@
- 
 import { useMemo } from 'react';
 import { useNavigate, useRoutes, useLocation, matchRoutes, type RouteObject } from 'react-router';
 import { SETTINGS_CONFIG } from '../config';
@@ -152,18 +151,21 @@ export const Permission = () => {
       if (!matchedRouteConfig) return;
 
       /**
-       * Bước 4: Kiểm tra quyền truy cập.
+       * Bước 4: Kiểm tra quyền truy cập — 2 lớp phân quyền.
        *
-       * checkUserPermission là pure function — nhận vào:
-       *   - routePermissions: auth config khai báo ở route (VD: [ROLE.USER] hoặc [] hoặc undefined).
-       *   - isAuthenticatedUser: user đã login chưa.
-       *   - userRoles: danh sách role của user (dùng cho Tầng 4 — role cụ thể).
+       * ── Lớp 1: Role ────────────────────────────────────────────────────────
+       *   routePermissions: auth config khai báo ở route.
+       *
+       * ── Lớp 2: Action ───────────────────────────────────────────────────────
+       *   allowedActions: CRUD action được phép trên route.
+       *   Guest (chưa login): chỉ được READ.
+       *   User đã login: full action (giới hạn chi tiết ở component).
        *
        * Trả về boolean: true = được phép, false = không được phép.
-       * Kết quả này quyết định luồng redirect bên dưới.
        */
       const userHasPermission = checkUserPermission({
          routePermissions: matchedRouteConfig.auth,
+         allowedActions: matchedRouteConfig.allowedActions,
          isAuthenticatedUser: isAuthenticated,
          userRoles,
       });

@@ -1,4 +1,5 @@
 import type { Role } from '@app/constants';
+import type { Action } from '@app/constants/actions';
 import type { OverrideProps } from '@types';
 import type { RouteObject } from 'react-router';
 
@@ -21,6 +22,17 @@ export type RouteId = string;
  *   - [ROLE.ADMIN, ROLE.MANAGER] → admin hoặc manager
  */
 export type RouteProps = OverrideProps<RouteObject, { path?: string; children?: RouteProps[] }> & {
-   /** Permissions required to access this route */
+   /** Quyền truy cập theo Role (cấp độ 1). Xem chi tiết ở checkUserPermission. */
    auth?: Role[];
+
+   /**
+    * Quyền truy cập theo Action — giới hạn hành động CRUD trên route.
+    *
+    * - undefined → full access (tất cả action)
+    * - [ACTION.READ] → chỉ được xem, không create/update/delete
+    * - [ACTION.READ, ACTION.UPDATE] → xem và sửa, không tạo mới
+    *
+    * Dùng cho: trang detail chỉ đọc, trang tạo mới chỉ có quyền CREATE...
+    */
+   allowedActions?: Action[];
 };
