@@ -5,6 +5,7 @@ import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { checker } from 'vite-plugin-checker';
 import dynamicImport from 'vite-plugin-dynamic-import';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -14,6 +15,7 @@ export default defineConfig(({ mode }) => {
       base: '/',
       plugins: [
          react(),
+         tailwindcss(),
          svgr({
             svgrOptions: {
                exportType: 'named', // Xuất dưới dạng named exports

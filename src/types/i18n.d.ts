@@ -2,9 +2,10 @@
 import type { AppResources } from '@language/resources';
 import 'i18next';
 
+// định nghĩa toàn bộ resources
+
 declare module 'i18next' {
    interface CustomTypeOptions {
-      // định nghĩa toàn bộ resources
       resources: AppResources;
       defaultNS: 'translation';
       returnNull: false;
