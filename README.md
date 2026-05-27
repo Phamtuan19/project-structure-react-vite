@@ -78,59 +78,34 @@
 ```text
 src/
   ├── app/                    # Core application logic
-  │   ├── config/            # Application configurations
-  │   │   ├── api/           # API configurations (axios, endpoints)
-  │   │   ├── dayjs.config.ts # Date/time configuration
-  │   │   ├── i18n/          # Internationalization setup
-  │   │   ├── settings.ts    # App settings
-  │   │   └── theme-antd/    # Ant Design theme configuration
+  │   ├── config/            # Application configurations (API, i18n, theme)
   │   ├── constants/         # App-level constants
   │   ├── context/           # React contexts (notification, etc.)
   │   ├── permission/        # Permission management system
-  │   ├── providers/         # App providers (notification, etc.)
+  │   ├── providers/         # App providers
   │   ├── routes/            # Route configuration and loadable components
-  │   │   ├── config/        # Route configuration utilities
-  │   │   └── router-provider.tsx # Router provider
   │   ├── index.tsx          # App component
-  │   └── utils/             # App utilities (permissions, session storage)
+  │   └── utils/             # App utilities
   ├── assets/                # Static assets (icons, images, SVGs)
   ├── components/            # Reusable components
-  │   ├── builder/           # Page builder components
-  │   │   └── sections/      # Builder sections
   │   ├── controller-form/   # Form controllers (input, select, checkbox, etc.)
   │   ├── shared/            # Shared components (loading, error boundary, etc.)
-  │   └── ui/                # UI components (navigation, etc.)
+  │   └── ui/                # UI components
   ├── constants/             # Global constants (API endpoints, routes, menu)
+  ├── features/              # Feature-based modules (Auth, etc.)
+  │   └── auth/              # Authentication feature
   ├── helpers/               # Helper functions
-  ├── hooks/                 # Custom React hooks (auth, debounced, etc.)
-  ├── language/              # i18n resources and configuration
-  │   ├── en.json            # English translations
-  │   ├── vi.json            # Vietnamese translations
-  │   └── resources.ts       # Language resources configuration
+  ├── hooks/                 # Custom React hooks
+  ├── language/              # i18n resources (EN/VI)
   ├── layouts/               # Layout components
-  │   └── main-layout/       # Main application layout
-  ├── pages/                 # Page components
-  │   ├── auth/              # Authentication pages
-  │   │   ├── register/      # User registration
-  │   │   └── signin/        # User sign-in
-  │   ├── errors/            # Error pages (403, 404, 500)
-  │   ├── home/              # Home page
-  │   └── not-found/         # 404 not found page
+  ├── pages/                 # Page components (auth, errors, home)
   ├── routes/                # Route definitions and guards
-  │   ├── auth-route.tsx     # Authentication route guard
-  │   ├── private-route.tsx  # Private route guard
-  │   └── index.tsx          # Route configuration
   ├── script/                # Utility scripts
-  │   ├── detect-package/    # Package manager detection
-  │   └── work-flow-git/     # Git workflow scripts
-  ├── store/                 # Zustand stores for state management
-  │   └── auth-store/        # Authentication state management
-  ├── styles/                # Global styles and CSS
+  ├── store/                 # Zustand stores
+  ├── styles/                # Global styles and TailwindCSS
   ├── test/                  # Test setup and utilities
   ├── types/                 # TypeScript type definitions
-  ├── utils/                 # Utility functions (cn, cookies, etc.)
-  ├── env.d.ts               # Environment type definitions
-  ├── i18n.d.ts              # i18next type definitions
+  ├── utils/                 # Utility functions (cookies, storage, etc.)
   └── main.tsx               # Application entry point
 public/                      # Public static files (favicon, etc.)
 dist/                        # Build output directory
@@ -153,8 +128,9 @@ yarn.lock                    # Yarn lockfile
 
 - **app/**: Chứa logic cốt lõi của ứng dụng bao gồm cấu hình (API, i18n, theme), providers, context, hệ thống phân quyền và cấu hình routes.
 - **assets/**: Tài nguyên tĩnh như icons, images, SVGs được sử dụng trong toàn bộ ứng dụng.
-- **components/**: Components tái sử dụng, được tổ chức thành: shared (chung), ui (giao diện), controller-form (form controls), và builder (page builder).
+- **components/**: Components tái sử dụng, được tổ chức thành: shared (chung), ui (giao diện), và controller-form (form controls).
 - **constants/**: Hằng số và cấu hình dùng chung trong toàn dự án (API endpoints, routes, menu items).
+- **features/**: Chứa các module nghiệp vụ được đóng gói theo tính năng (ví dụ: Auth), bao gồm cả api, hooks, store và components riêng của tính năng đó.
 - **helpers/**: Các hàm helper hỗ trợ xử lý logic nhỏ lẻ.
 - **hooks/**: Custom React hooks để tái sử dụng logic giữa các components (auth, debounced, click outside, etc.).
 - **language/**: Quản lý đa ngôn ngữ với i18next, chứa resources (EN/VI) và cấu hình.
@@ -180,6 +156,59 @@ yarn.lock                    # Yarn lockfile
 - **🐛 Error Handling**: Error boundaries với Sentry integration
 - **🧪 Testing**: Vitest + React Testing Library
 - **🚀 Production Ready**: Docker support, CI/CD ready
+
+## 📖 Hướng dẫn Phát triển
+
+### 1. Cách thêm một Trang mới (New Page)
+
+Dự án sử dụng hệ thống **Dynamic Loadable**. Bạn không cần import thủ công vào router nếu tuân thủ quy tắc đặt tên.
+
+1. **Tạo file trang**: Tại `src/pages/{tên-trang}/index.tsx`.
+2. **Khai báo Route**: Mở `src/routes/private-route.tsx` và thêm vào mảng `children`:
+
+```tsx
+{
+  id: 'dashboard',
+  path: '/dashboard',
+  element: loadable({ path: 'dashboard' }),
+  auth: ['ADMIN'], // Tùy chọn phân quyền
+}
+```
+
+### 2. Quản lý State với Zustand
+
+Tạo store mới trong `src/store/{tên-store}/` sử dụng middleware `immer`:
+
+```typescript
+export const useAppStore = create<AppState>()(
+   immer((set) => ({
+      count: 0,
+      increment: () =>
+         set((state) => {
+            state.count += 1;
+         }),
+   })),
+);
+```
+
+### 3. Đa ngôn ngữ (i18n)
+
+- Cấu hình tại `src/language/`.
+- Sử dụng hook `useTranslation` trong component: `const { t } = useTranslation();`.
+
+### 4. Quy trình Commit Code
+
+Dự án áp dụng **Conventional Commits**. Format: `<type>(<scope>): <subject>`
+
+- `feat`: Tính năng mới
+- `fix`: Sửa lỗi
+- `docs`: Tài liệu
+- `refactor`: Tái cấu trúc
+- `perf`: Tối ưu hiệu năng
+
+_Ví dụ:_ `git commit -m "feat(auth): thêm chức năng quên mật khẩu"`
+
+---
 
 ## 📄 License
 

@@ -10,6 +10,12 @@ export const ROUTE_PATH = {
    SIGN_IN: '/auth/signin',
 
    REGISTER: '/auth/register',
+
+   // ===== ADMIN ROUTES ===== //
+
+   ADMIN: '/admin',
+   ADMIN_DASHBOARD: '/admin/dashboard',
+   ADMIN_SETTINGS: '/admin/settings',
 } as const;
 
 export const RoutePathSchema = z.nativeEnum(ROUTE_PATH);

@@ -1,4 +1,18 @@
 {
+   "auth.register.confirm_password": "Confirm Password",
+   "auth.register.email": "Email Address",
+   "auth.register.errors.confirm_password_required": "Please confirm your password",
+   "auth.register.errors.email_invalid": "Please enter a valid email address",
+   "auth.register.errors.email_required": "Email is required",
+   "auth.register.errors.name_required": "Full name is required",
+   "auth.register.errors.password_min": "Password must be at least 6 characters long",
+   "auth.register.errors.passwords_must_match": "Passwords do not match",
+
+   "auth.register.login_link": "Already have an account?",
+   "auth.register.name": "Full Name",
+   "auth.register.password": "Password",
+   "auth.register.submit": "Sign Up",
+   "auth.register.title": "Create Account",
    "auth.signin.errors.identifier_invalid": "Must be a valid email or username",
    "auth.signin.errors.identifier_required": "Email or username is required",
    "auth.signin.errors.password_required": "Password is required",

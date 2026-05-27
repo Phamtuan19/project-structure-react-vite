@@ -4,17 +4,7 @@ import { API_END_POINT, ROUTE_PATH } from '@constants';
 import type { UserAuthInfo } from '@types';
 import { eraseCookie, setCookie } from '@utils';
 import { useMutation } from '@tanstack/react-query';
-
-export interface RequestDataSignin {
-   identifier: string;
-   password: string;
-}
-
-type LoginResponse = {
-   accessToken: string;
-   refreshToken: string;
-   name: string;
-};
+import type { RequestDataSignin, LoginResponse, RequestDataRegister, RegisterResponse } from '@features/auth/types';
 
 export const usePostSignin = () => {
    return useMutation<SuccessResponse<LoginResponse>, ErrorApiResponse, RequestDataSignin>({
@@ -34,6 +24,24 @@ export const usePostSignin = () => {
          openNotification({
             type: 'error',
             message: responseError?.message || 'Đăng nhập thất bại',
+         });
+      },
+   });
+};
+
+export const usePostRegister = () => {
+   return useMutation<SuccessResponse<RegisterResponse>, ErrorApiResponse, RequestDataRegister>({
+      mutationFn: (payload) => postRequest(API_END_POINT.AUTH_REGISTER, payload),
+      onSuccess: () => {
+         openNotification({
+            type: 'success',
+            message: 'Đăng ký tài khoản thành công',
+         });
+      },
+      onError: (responseError) => {
+         openNotification({
+            type: 'error',
+            message: responseError?.message || 'Đăng ký thất bại',
          });
       },
    });
@@ -61,3 +69,4 @@ export const usePostGetMe = () => {
       },
    });
 };
+export type { RequestDataSignin };

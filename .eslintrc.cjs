@@ -38,7 +38,7 @@ module.exports = {
    overrides: [
       {
          // Cấu hình dành riêng cho các file TypeScript (*.ts và *.tsx)
-         files: ['*.ts', '*.tsx'],
+         files: ['**/*.ts', '**/*.tsx'],
          extends: [
             'plugin:@typescript-eslint/eslint-recommended', // Các quy tắc cho TypeScript
             'plugin:@typescript-eslint/recommended', // Các quy tắc khuyến nghị cho TypeScript
@@ -57,7 +57,9 @@ module.exports = {
                'error',
                { checksVoidReturn: { arguments: false, attributes: false } },
             ],
-            // '@typescript-eslint/ban-types': ['error', { extendDefaults: true, types: { '{}': false } }],
+            '@typescript-eslint/no-explicit-any': 'error', //  check any type
+            '@typescript-eslint/consistent-type-imports': 'off', // check consistent type imports
+            '@typescript-eslint/no-floating-promises': 'error', // Check floating promises
             '@typescript-eslint/naming-convention': [
                'warn',
                {
@@ -113,27 +115,13 @@ module.exports = {
       'jsdoc/require-throws': 'off',
       'jsdoc/tag-lines': 'off',
       'jsdoc/sort-tags': 'off',
-      //   'jsdoc/require-jsdoc': [
-      //      'warn',
-      //      {
-      //         publicOnly: true,
-      //         require: {},
-      //         enableFixer: true,
-      //      },
-      //   ],
-      //   'jsdoc/require-jsdoc': 'off',
-      //   'jsdoc/require-description': 'warn',
-      //   'jsdoc/require-param': ['warn', { checkDestructuredRoots: false }],
-      //   'jsdoc/require-throws': 'error',
-      //   'jsdoc/tag-lines': ['warn', 'never', { startLines: 1 }],
-      //   'jsdoc/sort-tags': 'warn',
-      'react/button-has-type': 'error',
+      'react/button-has-type': 'warn',
       'react/destructuring-assignment': ['error', 'always', { destructureInSignature: 'always' }],
       'react/display-name': 'warn',
       'react/function-component-definition': ['warn', { namedComponents: 'arrow-function' }],
       'react/jsx-curly-brace-presence': 'warn',
       'react/jsx-fragments': 'error',
-      'react/jsx-max-depth': ['error', { max: 20 }],
+      'react/jsx-max-depth': ['error', { max: 5 }],
       'react/jsx-no-script-url': 'error',
       'react/jsx-pascal-case': 'error',
       'jsx-a11y/label-has-associated-control': 'off',
@@ -148,6 +136,7 @@ module.exports = {
       'react/self-closing-comp': 'warn',
       'tailwindcss/no-custom-classname': 'off',
       'tsdoc/syntax': 'warn',
+      'import/no-cycle': ['error', { maxDepth: 1 }],
    },
 
    // Cấu hình cho resolver của import
@@ -156,7 +145,10 @@ module.exports = {
          node: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
          },
-         typescript: true,
+         typescript: {
+            alwaysTryTypes: true,
+            project: ['./tsconfig.json'],
+         },
       },
       react: {
          version: 'detect',

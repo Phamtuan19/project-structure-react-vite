@@ -5,6 +5,7 @@ const API_END_POINT = {
     *
     */
    AUTH_SIGNIN: 'security/login',
+   AUTH_REGISTER: 'security/register',
    REFRESH_TOKEN: 'security/refresh-token',
 
    AUTH_ME: 'security/me',

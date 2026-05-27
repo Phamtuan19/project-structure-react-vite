@@ -1,4 +1,17 @@
 {
+   "auth.register.confirm_password": "Xác nhận mật khẩu",
+   "auth.register.email": "Địa chỉ email",
+   "auth.register.errors.confirm_password_required": "Xác nhận mật khẩu không được để trống",
+   "auth.register.errors.email_invalid": "Email không đúng định dạng",
+   "auth.register.errors.email_required": "Email không được để trống",
+   "auth.register.errors.name_required": "Họ và tên không được để trống",
+   "auth.register.errors.password_min": "Mật khẩu phải chứa ít nhất 6 ký tự",
+   "auth.register.errors.passwords_must_match": "Hai mật khẩu không trùng khớp",
+   "auth.register.login_link": "Đã có tài khoản?",
+   "auth.register.name": "Họ và tên",
+   "auth.register.password": "Mật khẩu",
+   "auth.register.submit": "Đăng ký",
+   "auth.register.title": "Đăng ký tài khoản",
    "auth.signin.errors.identifier_invalid": "Phải là email hợp lệ hoặc username",
    "auth.signin.errors.identifier_required": "Tài khoản đăng nhập không được để trống",
    "auth.signin.errors.password_required": "Mật khẩu không được để trống",
@@ -8,6 +21,7 @@
 
    "auth.signin.title": "Đăng nhập",
    "auth.signin.username": "Tên đăng nhập",
+
    "common.change_language": "Thay đổi ngôn ngữ",
    "common.language": "Ngôn ngữ",
 

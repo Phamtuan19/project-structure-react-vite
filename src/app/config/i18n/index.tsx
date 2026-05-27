@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import { LANGUAGE, LANGUAGE_KEY } from '@app/constants';
 import { resources } from '@language/resources';
 
-i18next.use(initReactI18next).init({
+void i18next.use(initReactI18next).init({
    resources,
    lng: LANGUAGE.VI,
    fallbackLng: LANGUAGE.VI,

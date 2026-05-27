@@ -1,7 +1,6 @@
-import type { Role } from '@app/constants';
-import type { Action } from '@app/constants/actions';
-import type { OverrideProps } from '@types';
-import type { RouteObject } from 'react-router';
+import type { PERMISSION_RULE, RoutePath } from '@constants';
+import type { OverrideProps, UserAuthInfo } from '@types';
+import type { RouteObject, Location, Params } from 'react-router';
 
 /**
  * Unique identifier for each route — dùng để lookup thay vì so sánh path string,
@@ -9,30 +8,43 @@ import type { RouteObject } from 'react-router';
  */
 export type RouteId = string;
 
-/**
- * Props for a route in the application.
- *
- * @param path - URL path (VD: '/auth/signin', '*')
- * @param id   - Unique identifier để lookup chính xác thay vì dùng path
- * @param auth - Quyền truy cập route:
- *   - undefined → ai cũng vào được (public)
- *   - []        → chỉ người chưa đăng nhập
- *   - [ROLE.USER]           → mọi user đã đăng nhập
- *   - [ROLE.ADMIN]          → chỉ admin
- *   - [ROLE.ADMIN, ROLE.MANAGER] → admin hoặc manager
- */
-export type RouteProps = OverrideProps<RouteObject, { path?: string; children?: RouteProps[] }> & {
-   /** Quyền truy cập theo Role (cấp độ 1). Xem chi tiết ở checkUserPermission. */
-   auth?: Role[];
+export type GuardFn = (context: {
+   auth: {
+      isAuthenticated: boolean | undefined;
+      isInitialized: boolean;
+      isLoading: boolean;
+      user: UserAuthInfo | null;
+   };
+   params: Params;
+   location: Location;
+   searchParams: URLSearchParams;
+}) => boolean | string;
 
-   /**
-    * Quyền truy cập theo Action — giới hạn hành động CRUD trên route.
-    *
-    * - undefined → full access (tất cả action)
-    * - [ACTION.READ] → chỉ được xem, không create/update/delete
-    * - [ACTION.READ, ACTION.UPDATE] → xem và sửa, không tạo mới
-    *
-    * Dùng cho: trang detail chỉ đọc, trang tạo mới chỉ có quyền CREATE...
-    */
-   allowedActions?: Action[];
+export type RouteProps = OverrideProps<RouteObject, { path?: string; children?: RouteProps[] }> & {
+   /** Danh sách guards thực thi trước khi truy cập route. */
+   canActivate?: GuardFn[];
+
+   /** Dữ liệu bổ sung đi kèm route (tương tự data của Angular). */
+   data?: {
+      title?: string;
+   };
 };
+
+type ValueOf<T> = T[keyof T];
+export type PermissionValue = ValueOf<{
+   [K in keyof typeof PERMISSION_RULE]: ValueOf<(typeof PERMISSION_RULE)[K]>;
+}>;
+
+/** Định nghĩa kiểu dữ liệu cho file route.meta.ts */
+export interface RouteMeta {
+   path?: RoutePath;
+   requiresAuth?: boolean; // true: yêu cầu đăng nhập, false: không
+   authRedirectTo?: string; // Tùy chỉnh đường dẫn redirect khi chưa đăng nhập
+   guestRedirectTo?: string; // Tùy chỉnh đường dẫn redirect khi đã đăng nhập
+   permission?: PermissionValue; // Quyền hạn cụ thể để truy cập trang
+   canActivate?: GuardFn[];
+   title?: string;
+}
+
+/** Helper giúp định nghĩa route metadata kèm theo tự động gợi ý (Autocomplete) */
+export const defineRouteMeta = (meta: RouteMeta): RouteMeta => meta;

@@ -1,15 +1,15 @@
 import { SETTINGS_CONFIG } from '@app/config';
-import { useAuth, useLoginNotification } from '@hooks';
 import { getCookie } from '@utils';
 import React, { useEffect, useRef } from 'react';
+import { useAuth, useLoginNotification } from '@hooks';
 
 interface RouterProviderProps {
    children?: React.ReactNode;
 }
 
 const RouterProvider = ({ children }: RouterProviderProps) => {
-   const hasFetchedUser = useRef(false);
    const { authGetUser, authLogout, isInitialized } = useAuth();
+   const hasFetchedUser = useRef(false);
 
    useLoginNotification();
 

@@ -6,6 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { checker } from 'vite-plugin-checker';
 import dynamicImport from 'vite-plugin-dynamic-import';
 import tailwindcss from '@tailwindcss/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -30,9 +31,27 @@ export default defineConfig(({ mode }) => {
          checker({ typescript: false }),
          tsconfigPaths(),
          dynamicImport(),
+         visualizer({ open: true, filename: 'dist/bundle-analysis.html' }),
       ],
+      build: {
+         rollupOptions: {
+            output: {
+               manualChunks(id) {
+                  if (id.includes('node_modules')) {
+                     if (id.includes('antd') || id.includes('@ant-design/icons')) {
+                        return 'antd';
+                     }
+                     if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+                        return 'react';
+                     }
+                     return 'vendor';
+                  }
+               },
+            },
+         },
+      },
       optimizeDeps: {
-         exclude: ['pdfjs-dist', 'pdfjs-dist/legacy/build/pdf', 'pdfjs-dist/legacy/build/pdf.worker.min'],
+         // exclude: ['pdfjs-dist', 'pdfjs-dist/legacy/build/pdf', 'pdfjs-dist/legacy/build/pdf.worker.min'],
       },
       server: {
          hmr: {

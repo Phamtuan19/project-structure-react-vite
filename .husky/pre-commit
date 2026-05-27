@@ -22,9 +22,6 @@
 #   $PM format:fix && $PM lint
 # fi
 
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 echo "🔍 Running pre-commit checks with lint-staged..."
 
 npx lint-staged

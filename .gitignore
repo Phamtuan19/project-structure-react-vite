@@ -39,3 +39,5 @@ lerna-debug.log*
 
 # Other lock json
 *.lock.json
+
+bundle-analysis.html

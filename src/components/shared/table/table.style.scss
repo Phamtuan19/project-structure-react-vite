@@ -1,0 +1,25 @@
+.custom-table {
+   .ant-table-body {
+      scrollbar-width: thin;
+      scrollbar-color: #c1c1c1 transparent;
+
+      &::-webkit-scrollbar {
+         width: 8px;
+         height: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+         background: transparent;
+         border-radius: 999px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+         background: #c1c1c1;
+         border-radius: 999px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+         background: #a8a8a8;
+      }
+   }
+}

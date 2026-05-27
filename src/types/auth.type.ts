@@ -13,6 +13,7 @@ export interface UserAuthInfo {
    isVerified: true;
    isEmailVerified: true;
    loginAttempts: 0;
+   permissions?: string[];
    createdAt: string;
    updatedAt: string;
 }

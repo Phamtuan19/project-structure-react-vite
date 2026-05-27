@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
+import { useAuth } from '../use-auth';
 import { openNotification } from '@components';
 import { LOGIN_NOTIFICATION_KEY } from '@app/constants';
-import { useAuth } from '@hooks/use-auth';
 
 export const useLoginNotification = () => {
    const { user } = useAuth();
@@ -9,7 +9,6 @@ export const useLoginNotification = () => {
    useEffect(() => {
       if (!user) return;
 
-      // Nếu chưa show notification cho session này
       const hasShown = sessionStorage.getItem(LOGIN_NOTIFICATION_KEY) === 'true';
 
       if (!hasShown) {
