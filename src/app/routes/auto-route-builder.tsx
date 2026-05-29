@@ -3,7 +3,7 @@ import type { RouteProps, RouteMeta, GuardFn } from './route.type';
 import { loadable } from './config';
 import { GuardExecutor } from './components/guard-executor';
 import { permissionGuard } from './guards';
-import { ErrorBoundary } from '@components';
+import { ErrorBoundary, Forbidden, InternalServerError } from '@components';
 
 const pages = import.meta.glob('/src/pages/**/*.tsx');
 const metas = import.meta.glob<{ default: RouteMeta }>('/src/pages/**/*.meta.ts', { eager: true });
@@ -30,10 +30,20 @@ export const generateAutoRoutes = (): RouteProps[] => {
                 : `/${normalizedPath}`;
 
       // Lấy element gốc
-      let element = <ErrorBoundary mode="page">{loadable({ path: normalizedPath })}</ErrorBoundary>;
+      let element: React.ReactNode;
 
+      element = (
+         <ErrorBoundary mode="page" fallback={!import.meta.env.DEV ? <InternalServerError /> : undefined}>
+            {loadable({ path: normalizedPath })}
+         </ErrorBoundary>
+      );
       // Tự động tổng hợp danh sách các Guards dựa trên flags và canActivate
       const routeGuards: GuardFn[] = [];
+
+      // Giả lập: Bắt buộc fail guard ở trang dashboard để test
+      if (normalizedPath === 'admin/dashboard') {
+         routeGuards.push(() => false);
+      }
 
       if (meta.permission) {
          routeGuards.push(permissionGuard(meta.permission));
@@ -50,6 +60,7 @@ export const generateAutoRoutes = (): RouteProps[] => {
                requiresAuth={meta.requiresAuth}
                authRedirectTo={meta.authRedirectTo}
                guestRedirectTo={meta.guestRedirectTo}
+               forbiddenFallback={<Forbidden />}
             >
                {element}
             </GuardExecutor>

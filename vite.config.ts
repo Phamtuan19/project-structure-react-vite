@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
                icon: true, // Cho phép dùng SVG như một icon
                ref: true, // Cho phép dùng ref trên SVG
                titleProp: true, // Cho phép thêm title vào SVG
-               svgo: false, // Tắt tối ưu hóa SVG
+               svgo: true, // Bật tối ưu hóa SVG
                svgoConfig: require('./svgo.config.cjs'), // Tải cấu hình SVGO từ file riêng
             },
             include: '**/*.svg', // Áp dụng plugin cho tất cả file .svg

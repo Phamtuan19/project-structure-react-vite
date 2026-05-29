@@ -1,5 +1,5 @@
 import type { RouteProps } from './route.type';
-import { Outlet } from 'react-router';
+import { Outlet, useRoutes, type RouteObject } from 'react-router';
 
 import { ROUTE_PATH } from '@constants';
 import { loadable } from './config';
@@ -8,7 +8,7 @@ import { generateAutoRoutes } from './auto-route-builder';
 /**
  * An array of route objects that define the paths and elements for the application's pages.
  */
-export const ROUTES: RouteProps[] = [
+const ROUTES: RouteProps[] = [
    {
       element: <Outlet />,
       children: [
@@ -29,3 +29,10 @@ export const ROUTES: RouteProps[] = [
       ],
    },
 ];
+
+const AppRoutes = () => {
+   const routes = useRoutes(ROUTES as RouteObject[]);
+   return <>{routes}</>;
+};
+
+export default AppRoutes;

@@ -1,7 +1,8 @@
 import { defineRouteMeta } from '@app/routes';
+import { ROUTE_PATH } from '@constants';
 
 export default defineRouteMeta({
-   path: '/admin/dashboard',
+   path: ROUTE_PATH.SERVER_ERROR,
    requiresAuth: false,
-   title: 'Bảng điều khiển',
+   title: 'Máy chủ lỗi',
 });

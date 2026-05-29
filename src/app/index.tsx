@@ -8,6 +8,7 @@ import { ConfigProvider } from 'antd';
 import { themeAntdConfig } from './config';
 import { RouterProvider, AppRoutes } from './routes';
 import { ErrorBoundary } from '@components';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => {
                   <RouterProvider>
                      <AppRoutes />
                      <NotificationProvider />
+                     <ReactQueryDevtools initialIsOpen={false} />
                   </RouterProvider>
                </ConfigProvider>
             </BrowserRouter>

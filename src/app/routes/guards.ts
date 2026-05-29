@@ -7,5 +7,5 @@ export const permissionGuard =
       // Lấy danh sách quyền từ thông tin user (ví dụ: auth.user.permissions)
       const userPermissions: string[] = auth.user?.permissions || [];
 
-      return userPermissions.includes(requiredPermission) ? true : '/403';
+      return userPermissions.includes(requiredPermission) ? true : false;
    };

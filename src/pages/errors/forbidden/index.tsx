@@ -4,8 +4,10 @@
  * @remarks This component displays the 403 Forbidden error page.
  */
 
-const Forbidden = () => {
-   return <div />;
+import { Forbidden } from '@components';
+
+const Page = () => {
+   return <Forbidden />;
 };
 
-export default Forbidden;
+export default Page;

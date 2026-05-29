@@ -9,6 +9,7 @@ interface GuardExecutorProps {
    requiresAuth?: boolean;
    authRedirectTo?: string;
    guestRedirectTo?: string;
+   forbiddenFallback?: React.ReactNode;
    children: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ export const GuardExecutor = ({
    requiresAuth,
    authRedirectTo = SETTINGS_CONFIG.UNAUTHORIZED_REDIRECT_URL,
    guestRedirectTo = SETTINGS_CONFIG.SIGN_IN_REDIRECT_URL,
+   forbiddenFallback,
    children,
 }: GuardExecutorProps) => {
    const auth = useAuth();
@@ -47,11 +49,22 @@ export const GuardExecutor = ({
       const result = guard({ auth, params, location, searchParams });
 
       if (result === false) {
-         // Chặn và chuyển hướng về trang 403 mặc định (hoặc trang login)
-         return <Navigate to="/403" replace state={{ from: location }} />;
+         // Hiển thị fallback hoặc chuyển hướng về trang 403 mặc định
+         return forbiddenFallback ? (
+            <>{forbiddenFallback}</>
+         ) : (
+            <Navigate to="/403" replace state={{ from: location }} />
+         );
       }
 
       if (typeof result === 'string') {
+         if (result === '/403' || result === '/errors/forbidden') {
+            return forbiddenFallback ? (
+               <>{forbiddenFallback}</>
+            ) : (
+               <Navigate to="/403" replace state={{ from: location }} />
+            );
+         }
          // Chuyển hướng tới đường dẫn được chỉ định bởi Guard
          return <Navigate to={result} replace state={{ from: location }} />;
       }

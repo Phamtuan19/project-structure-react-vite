@@ -1,4 +1,4 @@
-import { defineRouteMeta } from '@app/routes/route.type';
+import { defineRouteMeta } from '@app/routes';
 
 export default defineRouteMeta({
    path: '/auth/signin',

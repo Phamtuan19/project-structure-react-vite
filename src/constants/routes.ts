@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const ROUTE_PATH = {
    ALL: '*',
+   FORBIDDEN: '/403',
+   SERVER_ERROR: '/500',
 
    HOME: '/',
 

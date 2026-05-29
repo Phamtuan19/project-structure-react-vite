@@ -1,6 +1,5 @@
 'use no memo';
 
-import type React from 'react';
 import { useMemo, useState } from 'react';
 import type { TableProps as AntdTableProps } from 'antd';
 import { Table as AntdTable, Button, Pagination, Spin } from 'antd';
@@ -19,7 +18,7 @@ import './table.style.scss';
 import type { SorterResult } from 'antd/es/table/interface';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
-interface Table<TData> {
+interface TableCustomProps<TData extends object> extends Omit<AntdTableProps<TData>, 'columns' | 'dataSource'> {
    columnsData: ColumnDef<TData, unknown>[];
    dataSource: TData[];
 
@@ -30,7 +29,8 @@ interface Table<TData> {
 
    loading?: boolean;
 
-   rowKey?: keyof TData | ((record: TData) => React.Key);
+   syncToUrl?: boolean;
+   urlPrefix?: string;
 }
 
 const Table = <TData extends object>({
@@ -41,15 +41,31 @@ const Table = <TData extends object>({
    manualSorting,
    rowKey,
    loading,
-}: Table<TData>) => {
+   syncToUrl = true,
+   urlPrefix,
+   onChange,
+   ...restProps
+}: TableCustomProps<TData>) => {
    const [searchParams, setSearchParams] = useSearchParams();
    const [columnVisibility, setColumnVisibility] = useState({});
 
-   // --- 1. ĐỌC TRẠNG THÁI TỪ URL PARAMS ---
-   const page = parseInt(searchParams.get('page') || '1', 10);
-   const pageSize = parseInt(searchParams.get('pageSize') || '5', 10);
-   const sortBy = searchParams.get('sortBy');
-   const sortOrder = searchParams.get('sortOrder');
+   // --- LOCAL STATES FOR FALLBACK WHEN syncToUrl = false ---
+   const [localPage, setLocalPage] = useState(1);
+   const [localPageSize, setLocalPageSize] = useState(5);
+   const [localSortBy, setLocalSortBy] = useState<string | null>(null);
+   const [localSortOrder, setLocalSortOrder] = useState<string | null>(null);
+
+   // --- KEYS FOR URL PARAMS ---
+   const pageKey = urlPrefix ? `${urlPrefix}_page` : 'page';
+   const pageSizeKey = urlPrefix ? `${urlPrefix}_pageSize` : 'pageSize';
+   const sortByKey = urlPrefix ? `${urlPrefix}_sortBy` : 'sortBy';
+   const sortOrderKey = urlPrefix ? `${urlPrefix}_sortOrder` : 'sortOrder';
+
+   // --- READ STATE FROM URL OR LOCAL ---
+   const page = syncToUrl ? parseInt(searchParams.get(pageKey) || '1', 10) : localPage;
+   const pageSize = syncToUrl ? parseInt(searchParams.get(pageSizeKey) || '5', 10) : localPageSize;
+   const sortBy = syncToUrl ? searchParams.get(sortByKey) : localSortBy;
+   const sortOrder = syncToUrl ? searchParams.get(sortOrderKey) : localSortOrder;
 
    const pagination = useMemo(() => ({ pageIndex: page - 1, pageSize }), [page, pageSize]);
    const sorting = useMemo<SortingState>(() => {
@@ -59,7 +75,7 @@ const Table = <TData extends object>({
 
    const columns = useMemo(() => columnsData, [columnsData]);
 
-   // --- 2. KHỞI TẠO TANSTACK TABLE ---
+   // --- KHỞI TẠO TANSTACK TABLE ---
    // eslint-disable-next-line react-hooks/incompatible-library
    const table = useReactTable<TData>({
       data: dataSource,
@@ -81,6 +97,9 @@ const Table = <TData extends object>({
    const antdColumns: AntdTableProps<TData>['columns'] = useMemo(() => {
       return table.getFlatHeaders().map((header) => {
          const columnId = header.column.id;
+         const restColumnProps = { ...header.column.columnDef };
+         delete restColumnProps.header;
+         delete restColumnProps.cell;
          return {
             id: columnId,
             title: () => flexRender(header.column.columnDef.header, header.getContext()),
@@ -88,6 +107,13 @@ const Table = <TData extends object>({
             key: columnId,
             sorter: header.column.getCanSort(),
             sortOrder: sortBy === columnId ? (sortOrder === 'desc' ? 'descend' : 'ascend') : null,
+            render: (_value, _record, index) => {
+               // eslint-disable-next-line security/detect-object-injection
+               const row = table.getRowModel().rows[index];
+               const cell = row?.getVisibleCells().find((c) => c.column.id === columnId);
+               return cell ? flexRender(cell.column.columnDef.cell, cell.getContext()) : _value;
+            },
+            ...restColumnProps,
          };
       });
    }, [table, sortBy, sortOrder]);
@@ -95,26 +121,39 @@ const Table = <TData extends object>({
    // Lấy dữ liệu đã phân trang và sort từ nội bộ TanStack
    const rowData = table.getRowModel().rows.map((row) => row.original);
 
-   // --- 3. HÀM CẬP NHẬT URL PARAMS CHUNG ---
-   const updateUrlParams = (newPage: number, newPageSize: number, currentSorter?: SorterResult<TData>) => {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set('page', String(newPage));
-      newParams.set('pageSize', String(newPageSize));
+   // --- HÀM CẬP NHẬT TRẠNG THÁI CHUNG ---
+   const updateParams = (newPage: number, newPageSize: number, currentSorter?: SorterResult<TData>) => {
+      if (syncToUrl) {
+         const newParams = new URLSearchParams(searchParams);
+         newParams.set(pageKey, String(newPage));
+         newParams.set(pageSizeKey, String(newPageSize));
 
-      if (currentSorter && !Array.isArray(currentSorter) && currentSorter.field && currentSorter.order) {
-         newParams.set('sortBy', String(currentSorter.field));
-         newParams.set('sortOrder', currentSorter.order === 'descend' ? 'desc' : 'asc');
-      } else if (currentSorter) {
-         newParams.delete('sortBy');
-         newParams.delete('sortOrder');
+         if (currentSorter && !Array.isArray(currentSorter) && currentSorter.field && currentSorter.order) {
+            newParams.set(sortByKey, String(currentSorter.field));
+            newParams.set(sortOrderKey, currentSorter.order === 'descend' ? 'desc' : 'asc');
+         } else if (currentSorter) {
+            newParams.delete(sortByKey);
+            newParams.delete(sortOrderKey);
+         }
+         setSearchParams(newParams);
+      } else {
+         setLocalPage(newPage);
+         setLocalPageSize(newPageSize);
+         if (currentSorter && !Array.isArray(currentSorter) && currentSorter.field && currentSorter.order) {
+            setLocalSortBy(String(currentSorter.field));
+            setLocalSortOrder(currentSorter.order === 'descend' ? 'desc' : 'asc');
+         } else if (currentSorter) {
+            setLocalSortBy(null);
+            setLocalSortOrder(null);
+         }
       }
-      setSearchParams(newParams);
    };
 
    // Xử lý khi user bấm sort trên Header của Antd
-   const handleTableChange: AntdTableProps<TData>['onChange'] = (_antdPagination, _filters, sorter) => {
+   const handleTableChange: AntdTableProps<TData>['onChange'] = (antdPagination, filters, sorter, extra) => {
       const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter;
-      updateUrlParams(page, pageSize, singleSorter);
+      updateParams(page, pageSize, singleSorter);
+      onChange?.(antdPagination, filters, sorter, extra);
    };
 
    const totalPages = Math.ceil(total / pageSize);
@@ -148,6 +187,7 @@ const Table = <TData extends object>({
                      </div>
                   ),
                }}
+               {...restProps}
             />
 
             {/* LOADING OVERLAY */}
@@ -182,21 +222,46 @@ const Table = <TData extends object>({
                pageSizeOptions={['5', '10', '20', '50', '100']}
                showTotal={(total, range) => `${range[0]}-${range[1]} trên ${total} bản ghi`}
                onChange={(newPage, newPageSize) => {
-                  updateUrlParams(newPage, newPageSize);
+                  updateParams(newPage, newPageSize);
                }}
                itemRender={(pageNumber, type, originalElement) => {
-                  const isActive = pageNumber === page;
-
                   if (type === 'prev') {
-                     return <Button size="middle" disabled={isPrevDisabled} icon={<LeftOutlined />} />;
+                     return (
+                        <Button
+                           size="middle"
+                           disabled={isPrevDisabled}
+                           icon={<LeftOutlined className="text-xs" />}
+                           className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition-all hover:border-blue-500 hover:text-blue-500 disabled:bg-gray-50 disabled:text-gray-300"
+                        />
+                     );
                   }
 
                   if (type === 'next') {
-                     return <Button size="middle" disabled={isNextDisabled} icon={<RightOutlined />} />;
+                     return (
+                        <Button
+                           size="middle"
+                           disabled={isNextDisabled}
+                           icon={<RightOutlined className="text-xs" />}
+                           className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition-all hover:border-blue-500 hover:text-blue-500 disabled:bg-gray-50 disabled:text-gray-300"
+                        />
+                     );
                   }
 
                   if (type === 'page') {
-                     return <Button type={isActive ? 'primary' : 'text'} size="middle" icon={pageNumber} />;
+                     const isActive = pageNumber === page;
+                     return (
+                        <Button
+                           type={isActive ? 'primary' : 'text'}
+                           size="middle"
+                           className={`flex h-9 w-9 max-w-9 items-center justify-center rounded-lg text-sm font-medium transition-all ${
+                              isActive
+                                 ? 'bg-blue-600 text-white shadow-xs hover:bg-blue-700'
+                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                           }`}
+                        >
+                           {pageNumber}
+                        </Button>
+                     );
                   }
 
                   return originalElement;

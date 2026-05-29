@@ -23,3 +23,27 @@
       }
    }
 }
+
+.custom-pagination {
+   display: flex;
+   align-items: center;
+
+   .ant-pagination-item,
+   .ant-pagination-prev,
+   .ant-pagination-next,
+   .ant-pagination-jump-prev,
+   .ant-pagination-jump-next {
+      margin: 0 2px !important;
+      border: none !important;
+      background: transparent !important;
+      height: auto !important;
+      min-width: auto !important;
+      line-height: inherit !important;
+
+      // Đảm bảo không có box-shadow/outline dư thừa khi click
+      button {
+         outline: none !important;
+         box-shadow: none !important;
+      }
+   }
+}
